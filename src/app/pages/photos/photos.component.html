@@ -1,0 +1,12 @@
+<main id="photos-page">
+  <div class="container">
+    <header class="page-header">
+      <h1 class="page-title">Photos</h1>
+      <p class="page-desc">用镜头捕捉的片段</p>
+    </header>
+    <app-feed-row
+      *ngFor="let item of feedItems; trackBy: trackByLink"
+      [item]="item">
+    </app-feed-row>
+  </div>
+</main>

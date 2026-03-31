@@ -1,0 +1,75 @@
+.page-header {
+  padding: 3rem 0 2rem;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.page-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: var(--fg);
+}
+
+/* ── Content ── */
+.about-content {
+  padding-top: 2.5rem;
+}
+
+.about-intro {
+  max-width: 520px;
+}
+
+.about-text {
+  font-size: 14px;
+  line-height: 2;
+  color: var(--fg-2);
+  margin-bottom: 1.2rem;
+}
+
+.about-text em {
+  font-style: normal;
+  color: var(--fg);
+}
+
+/* ── Links ── */
+.about-links {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.link-group {
+  display: flex;
+  align-items: baseline;
+  gap: 2rem;
+}
+
+.link-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  width: 56px;
+  flex-shrink: 0;
+}
+
+.link-items {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.link-item {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--fg-2);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.15s;
+}
+
+.link-item:hover {
+  color: var(--fg);
+}

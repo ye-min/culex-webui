@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Culex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #f7f6f3;
+    --fg:       #1a1916;
+    --fg-2:     #5a5854;
+    --fg-3:     #9a9894;
+    --border:   rgba(26,25,22,0.12);
+    --border-2: rgba(26,25,22,0.22);
+    --serif:    'Cormorant Garamond', Georgia, serif;
+    --mono:     'JetBrains Mono', monospace;
+    --sans:     system-ui, -apple-system, sans-serif;
+    --max:      880px;
+    --pad:      clamp(1.2rem, 4vw, 3rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:       #141412;
+      --fg:       #e8e6e1;
+      --fg-2:     #9a9894;
+      --fg-3:     #5a5854;
+      --border:   rgba(232,230,225,0.1);
+      --border-2: rgba(232,230,225,0.2);
+    }
+  }
+
+  html { font-size: 16px; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--pad);
+  }
+
+  /* ── Nav ── */
+  nav {
+    border-bottom: 0.5px solid var(--border-2);
+    padding: 2.4rem 0;
+  }
+  nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .logo {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.14em;
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--fg); }
+
+  /* ── Feed ── */
+  .row {
+    display: grid;
+    grid-template-columns: 196px 1px 1fr;
+    border-bottom: 0.5px solid var(--border);
+    padding: 1.7rem 0;
+    text-decoration: none;
+    color: inherit;
+  }
+  .row:hover .row-title { opacity: 0.4; }
+
+  .row-left {
+    padding-right: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 64px;
+  }
+  .row-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.26rem;
+  }
+  .row-date {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--fg-3);
+    letter-spacing: 0.04em;
+  }
+  .row-type {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .type-icon { display: flex; align-items: center; flex-shrink: 0; }
+  .type-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.1em;
+  }
+  .row-title {
+    font-family: var(--serif);
+    font-size: 16.5px;
+    font-weight: 300;
+    line-height: 1.42;
+    letter-spacing: 0.012em;
+    color: var(--fg);
+    margin-top: 0.8rem;
+    transition: opacity 0.15s;
+  }
+
+  .row-divider {
+    width: 0.5px;
+    background: var(--border-2);
+    align-self: stretch;
+  }
+
+  .row-right {
+    padding-left: 2rem;
+    display: flex;
+    align-items: center;
+  }
+  .row-excerpt {
+    font-size: 12.5px;
+    line-height: 1.82;
+    color: var(--fg-3);
+    max-width: 460px;
+  }
+  .row-excerpt em {
+    font-style: normal;
+    color: var(--fg-2);
+  }
+
+  /* photo */
+  .photo-strip {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  .photo-thumb {
+    background: var(--border);
+    border: 0.5px solid var(--border);
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .photo-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    opacity: 0.85;
+  }
+  .photo-thumb.wide { width: 210px; height: 64px; }
+  .photo-thumb.sq   { width:  64px; height: 64px; }
+  .photo-count {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--fg-3);
+    margin-left: 4px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ai */
+  .ai-exchange {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 460px;
+  }
+  .ai-line {
+    font-size: 12.5px;
+    line-height: 1.72;
+    color: var(--fg-3);
+    padding-left: 10px;
+    border-left: 1px solid var(--border);
+    border-radius: 0;
+  }
+  .ai-line.q {
+    border-left-color: var(--border-2);
+    color: var(--fg-2);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .row { grid-template-columns: 1fr; gap: 0.8rem; }
+    .row-divider { display: none; }
+    .row-right { padding-left: 0; }
+    .row-left { min-height: unset; }
+    .nav-links { gap: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/" class="logo">Culex</a>
+    <ul class="nav-links">
+      <li><a href="/writing">Writing</a></li>
+      <li><a href="/photos">Photos</a></li>
+      <li><a href="/ai">AI</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+
+    <a class="row" href="/writing/diffusion-attention">
+      <div class="row-left">
+        <div class="row-meta">
+          <span class="row-date">2026.03.28</span>
+          <div class="row-type">
+            <span class="type-icon">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <line x1="0" y1="2"   x2="11"  y2="2"   stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+                <line x1="0" y1="5.5" x2="7.5" y2="5.5" stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+                <line x1="0" y1="9"   x2="9"   y2="9"   stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="type-label">writing</span>
+          </div>
+        </div>
+        <span class="row-title">Diffusion 模型中的注意力机制：一次拆解</span>
+      </div>
+      <div class="row-divider"></div>
+      <div class="row-right">
+        <p class="row-excerpt">从 U-Net 的跨注意力层出发，试图弄清楚文本条件是如何在去噪过程中<em>一步步渗入图像结构</em>的。结论比预期复杂。</p>
+      </div>
+    </a>
+
+    <a class="row" href="/photos/kyoto-winter">
+      <div class="row-left">
+        <div class="row-meta">
+          <span class="row-date">2026.03.20</span>
+          <div class="row-type">
+            <span class="type-icon">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <rect x="0.5" y="0.5" width="10" height="10" rx="1" stroke="var(--fg-3)" stroke-width="1"/>
+                <circle cx="3.5" cy="4" r="1.1" fill="var(--fg-3)"/>
+                <path d="M0.5 8 L3.5 5.5 L6 7.5 L8 5 L10.5 8" stroke="var(--fg-3)" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </span>
+            <span class="type-label">photo</span>
+          </div>
+        </div>
+        <span class="row-title">京都，冬末的几个下午</span>
+      </div>
+      <div class="row-divider"></div>
+      <div class="row-right">
+        <div class="photo-strip">
+          <div class="photo-thumb wide"></div>
+          <div class="photo-thumb sq"></div>
+          <div class="photo-thumb sq"></div>
+          <span class="photo-count">+14</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="row" href="/writing/tools-and-thinking">
+      <div class="row-left">
+        <div class="row-meta">
+          <span class="row-date">2026.03.14</span>
+          <div class="row-type">
+            <span class="type-icon">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <line x1="0" y1="2"   x2="11"  y2="2"   stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+                <line x1="0" y1="5.5" x2="7.5" y2="5.5" stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+                <line x1="0" y1="9"   x2="9"   y2="9"   stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="type-label">writing</span>
+          </div>
+        </div>
+        <span class="row-title">关于工具与思维的关系，我改变了看法</span>
+      </div>
+      <div class="row-divider"></div>
+      <div class="row-right">
+        <p class="row-excerpt">以前觉得好工具应该透明，用着感觉不到它。现在觉得这个标准<em>本身就是问题</em>——工具应该有摩擦，摩擦才是思维发生的地方。</p>
+      </div>
+    </a>
+
+    <a class="row" href="/ai/recursive-aesthetics">
+      <div class="row-left">
+        <div class="row-meta">
+          <span class="row-date">2026.03.07</span>
+          <div class="row-type">
+            <span class="type-icon">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <path d="M1.5 1 Q1 1 1 1.8 L1 6.2 Q1 7 1.8 7 L3 7 L3 9.5 L5.5 7 L9.2 7 Q10 7 10 6.2 L10 1.8 Q10 1 9.2 1 Z" stroke="var(--fg-3)" stroke-width="1" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </span>
+            <span class="type-label">ai</span>
+          </div>
+        </div>
+        <span class="row-title">递归美学与中文诗歌结构</span>
+      </div>
+      <div class="row-divider"></div>
+      <div class="row-right">
+        <div class="ai-exchange">
+          <div class="ai-line q">《春江花月夜》里的意象是不是有某种递归结构？</div>
+          <div class="ai-line">有意思——"江畔何人初见月"到"何处相思明月楼"，确实像是在同一个意象上不断折叠……</div>
+        </div>
+      </div>
+    </a>
+
+    <a class="row" href="/writing/angular-signal">
+      <div class="row-left">
+        <div class="row-meta">
+          <span class="row-date">2026.02.27</span>
+          <div class="row-type">
+            <span class="type-icon">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <line x1="0" y1="2"   x2="11"  y2="2"   stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+                <line x1="0" y1="5.5" x2="7.5" y2="5.5" stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+                <line x1="0" y1="9"   x2="9"   y2="9"   stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="type-label">writing</span>
+          </div>
+        </div>
+        <span class="row-title">Angular Signal 的设计哲学与实践记录</span>
+      </div>
+      <div class="row-divider"></div>
+      <div class="row-right">
+        <p class="row-excerpt">Signal 不是新概念，但 Angular 的实现方式有它自己的立场。这篇是用了三个月之后的<em>真实使用感受</em>，不是文档翻译。</p>
+      </div>
+    </a>
+
+    <a class="row" href="/photos/shanghai-weekend">
+      <div class="row-left">
+        <div class="row-meta">
+          <span class="row-date">2026.02.18</span>
+          <div class="row-type">
+            <span class="type-icon">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <rect x="0.5" y="0.5" width="10" height="10" rx="1" stroke="var(--fg-3)" stroke-width="1"/>
+                <circle cx="3.5" cy="4" r="1.1" fill="var(--fg-3)"/>
+                <path d="M0.5 8 L3.5 5.5 L6 7.5 L8 5 L10.5 8" stroke="var(--fg-3)" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </span>
+            <span class="type-label">photo</span>
+          </div>
+        </div>
+        <span class="row-title">上海，某个平常的周末</span>
+      </div>
+      <div class="row-divider"></div>
+      <div class="row-right">
+        <div class="photo-strip">
+          <div class="photo-thumb sq"></div>
+          <div class="photo-thumb sq"></div>
+          <div class="photo-thumb sq"></div>
+          <div class="photo-thumb sq"></div>
+          <span class="photo-count">+6</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="row" href="/ai/rag-semantic-retrieval">
+      <div class="row-left">
+        <div class="row-meta">
+          <span class="row-date">2026.02.09</span>
+          <div class="row-type">
+            <span class="type-icon">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <path d="M1.5 1 Q1 1 1 1.8 L1 6.2 Q1 7 1.8 7 L3 7 L3 9.5 L5.5 7 L9.2 7 Q10 7 10 6.2 L10 1.8 Q10 1 9.2 1 Z" stroke="var(--fg-3)" stroke-width="1" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </span>
+            <span class="type-label">ai</span>
+          </div>
+        </div>
+        <span class="row-title">RAG 系统里语义检索的边界问题</span>
+      </div>
+      <div class="row-divider"></div>
+      <div class="row-right">
+        <div class="ai-exchange">
+          <div class="ai-line q">向量空间里的距离，真的等于语义距离吗？</div>
+          <div class="ai-line">不完全等于。余弦相似度度量的是方向而非含义，两个意思相反的句子在某些嵌入空间里可能很近……</div>
+        </div>
+      </div>
+    </a>
+
+    <a class="row" href="/writing/css-grid-asymmetric">
+      <div class="row-left">
+        <div class="row-meta">
+          <span class="row-date">2026.01.31</span>
+          <div class="row-type">
+            <span class="type-icon">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <line x1="0" y1="2"   x2="11"  y2="2"   stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+                <line x1="0" y1="5.5" x2="7.5" y2="5.5" stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+                <line x1="0" y1="9"   x2="9"   y2="9"   stroke="var(--fg-3)" stroke-width="1" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="type-label">writing</span>
+          </div>
+        </div>
+        <span class="row-title">用 CSS Grid 实现非对称排版布局</span>
+      </div>
+      <div class="row-divider"></div>
+      <div class="row-right">
+        <p class="row-excerpt">对称是默认值，不对称需要理由。这篇记录了<em>几个有说服力的比例关系</em>，以及它们背后的视觉逻辑。</p>
+      </div>
+    </a>
+
+  </div>
+</main>
+
+</body>
+</html>

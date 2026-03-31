@@ -1,1 +1,46 @@
-/* You can add global styles to this file, and also import other style files */
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Design Tokens ── */
+:root {
+  --bg:       #f7f6f3;
+  --fg:       #1a1916;
+  --fg-2:     #5a5854;
+  --fg-3:     #9a9894;
+  --border:   rgba(26,25,22,0.12);
+  --border-2: rgba(26,25,22,0.22);
+  --serif:    'Cormorant Garamond', Georgia, serif;
+  --mono:     'JetBrains Mono', monospace;
+  --sans:     system-ui, -apple-system, sans-serif;
+  --max:      880px;
+  --pad:      clamp(1.2rem, 4vw, 3rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:       #141412;
+    --fg:       #e8e6e1;
+    --fg-2:     #9a9894;
+    --fg-3:     #5a5854;
+    --border:   rgba(232,230,225,0.1);
+    --border-2: rgba(232,230,225,0.2);
+  }
+}
+
+/* ── Global ── */
+html { font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Container ── */
+.container {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}

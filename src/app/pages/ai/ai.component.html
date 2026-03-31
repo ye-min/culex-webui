@@ -1,0 +1,12 @@
+<main id="ai-page">
+  <div class="container">
+    <header class="page-header">
+      <h1 class="page-title">AI</h1>
+      <p class="page-desc">与机器的对话与碰撞</p>
+    </header>
+    <app-feed-row
+      *ngFor="let item of feedItems; trackBy: trackByLink"
+      [item]="item">
+    </app-feed-row>
+  </div>
+</main>

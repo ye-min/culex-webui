@@ -1,0 +1,248 @@
+/* ── Row ── */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1px 1.618fr;  /* golden ratio ≈ 38.2% : 61.8% */
+  border-bottom: 0.5px solid var(--border);
+  padding: 1.7rem 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.row:hover .row-title {
+  opacity: 0.4;
+}
+
+/* ── Left ── */
+.row-left {
+  padding-right: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 64px;
+}
+
+.row-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.26rem;
+}
+
+.row-date {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--fg-3);
+  letter-spacing: 0.04em;
+}
+
+.row-type {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.type-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.type-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--fg-3);
+  letter-spacing: 0.1em;
+}
+
+.row-title {
+  font-family: var(--serif);
+  font-size: 16.5px;
+  font-weight: 300;
+  line-height: 1.42;
+  letter-spacing: 0.012em;
+  color: var(--fg);
+  margin-top: 0.8rem;
+  transition: opacity 0.15s;
+}
+
+/* ── Divider ── */
+.row-divider {
+  width: 0.5px;
+  background: var(--border-2);
+  align-self: stretch;
+}
+
+/* ── Right ── */
+.row-right {
+  padding-left: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Excerpt (writing) ── */
+.row-excerpt {
+  font-size: 12.5px;
+  line-height: 1.82;
+  color: var(--fg-3);
+  max-width: 460px;
+}
+
+:host ::ng-deep .row-excerpt em {
+  font-style: normal;
+  color: var(--fg-2);
+}
+
+/* ── Photo strip ── */
+.photo-strip {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.photo-thumb {
+  background: var(--border);
+  border: 0.5px solid var(--border);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.photo-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.85;
+}
+
+.photo-thumb.wide {
+  width: 210px;
+  height: 64px;
+}
+
+.photo-thumb.sq {
+  width: 64px;
+  height: 64px;
+}
+
+.photo-count {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--fg-3);
+  margin-left: 4px;
+  letter-spacing: 0.06em;
+}
+
+/* ── AI exchange ── */
+.ai-exchange {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 460px;
+}
+
+.ai-line {
+  font-size: 12.5px;
+  line-height: 1.72;
+  color: var(--fg-3);
+  padding-left: 10px;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+}
+
+.ai-line.q {
+  border-left-color: var(--border-2);
+  color: var(--fg-2);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .row-divider {
+    display: none;
+  }
+
+  .row-right {
+    padding-left: 0;
+  }
+
+  .row-left {
+    min-height: unset;
+  }
+}
+
+/* ══════════════════════════════════════
+   Type-based accent colors (微量点缀)
+   Writing: #987338 琥珀
+   Photo:   #AE543A 赤陶
+   AI:      #4E89AF 钢蓝
+   ══════════════════════════════════════ */
+
+/* ── Writing accent ── */
+.row.writing .type-icon svg line {
+  stroke: #987338;
+}
+
+.row.writing .type-label {
+  color: #987338;
+}
+
+.row.writing:hover .row-title {
+  opacity: 1;
+  color: #987338;
+}
+
+/* ── Photo accent ── */
+.row.photo .type-icon svg rect {
+  stroke: #AE543A;
+}
+
+.row.photo .type-icon svg circle {
+  fill: #AE543A;
+}
+
+.row.photo .type-icon svg path {
+  stroke: #AE543A;
+}
+
+.row.photo .type-label {
+  color: #AE543A;
+}
+
+.row.photo:hover .row-title {
+  opacity: 1;
+  color: #AE543A;
+}
+
+.row.photo:hover .photo-count {
+  color: #AE543A;
+}
+
+/* ── AI accent ── */
+.row.ai .type-icon svg path {
+  stroke: #4E89AF;
+}
+
+.row.ai .type-label {
+  color: #4E89AF;
+}
+
+.row.ai:hover .row-title {
+  opacity: 1;
+  color: #4E89AF;
+}
+
+.row.ai .ai-line.q {
+  border-left-color: rgba(78, 137, 175, 0.4);
+}
+
+.row.ai:hover .ai-line.q {
+  border-left-color: rgba(78, 137, 175, 0.7);
+}
+
+/* ── Shared hover transition ── */
+.row-title {
+  transition: color 0.2s ease, opacity 0.15s;
+}

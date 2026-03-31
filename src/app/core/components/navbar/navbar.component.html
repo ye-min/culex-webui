@@ -1,0 +1,14 @@
+<nav id="main-nav">
+  <div class="container">
+    <a routerLink="/" class="logo">Culex</a>
+    <ul class="nav-links">
+      <li *ngFor="let link of navLinks">
+        <a [routerLink]="link.path"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }">
+          {{ link.label }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
