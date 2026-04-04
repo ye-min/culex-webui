@@ -9,6 +9,12 @@
   --fg-3:     #9a9894;
   --border:   rgba(26,25,22,0.12);
   --border-2: rgba(26,25,22,0.22);
+  
+  /* Accent Colors */
+  --c-write:  #987338;
+  --c-photo:  #AE543A;
+  --c-ai:     #4E89AF;
+
   --serif:    'Cormorant Garamond', Georgia, serif;
   --mono:     'JetBrains Mono', monospace;
   --sans:     system-ui, -apple-system, sans-serif;
@@ -18,12 +24,18 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg:       #141412;
-    --fg:       #e8e6e1;
-    --fg-2:     #9a9894;
-    --fg-3:     #5a5854;
-    --border:   rgba(232,230,225,0.1);
-    --border-2: rgba(232,230,225,0.2);
+    /* Refined Editorial Dark Mode */
+    --bg:       #121212;
+    --fg:       #eaeaea;
+    --fg-2:     #a0a0a0;
+    --fg-3:     #6b6b6b;
+    --border:   rgba(234,234,234,0.08);
+    --border-2: rgba(234,234,234,0.16);
+
+    /* Lighter, softer accents for dark backgrounds */
+    --c-write:  #b58f50;
+    --c-photo:  #c56f57;
+    --c-ai:     #67a2cb;
   }
 }
 
@@ -43,4 +55,23 @@ body {
   max-width: var(--max);
   margin: 0 auto;
   padding: 0 var(--pad);
+}
+
+/* ── Page Transition Animations ── */
+@keyframes fadeSlideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(16px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Apply entrance animation to all routed page components automatically */
+app-home, app-writing, app-photos, app-ai, app-about,
+app-article-detail, app-photo-detail, app-ai-detail {
+  display: block;
+  animation: fadeSlideUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

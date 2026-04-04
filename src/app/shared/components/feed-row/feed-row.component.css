@@ -175,71 +175,86 @@
 
 /* ══════════════════════════════════════
    Type-based accent colors (微量点缀)
-   Writing: #987338 琥珀
-   Photo:   #AE543A 赤陶
-   AI:      #4E89AF 钢蓝
+   Writing: var(--c-write)
+   Photo:   var(--c-photo)
+   AI:      var(--c-ai)
    ══════════════════════════════════════ */
 
 /* ── Writing accent ── */
 .row.writing .type-icon svg line {
-  stroke: #987338;
+  stroke: var(--c-write);
 }
 
 .row.writing .type-label {
-  color: #987338;
+  color: var(--c-write);
 }
 
 .row.writing:hover .row-title {
   opacity: 1;
-  color: #987338;
+  color: var(--c-write);
 }
 
 /* ── Photo accent ── */
 .row.photo .type-icon svg rect {
-  stroke: #AE543A;
+  stroke: var(--c-photo);
 }
 
 .row.photo .type-icon svg circle {
-  fill: #AE543A;
+  fill: var(--c-photo);
 }
 
 .row.photo .type-icon svg path {
-  stroke: #AE543A;
+  stroke: var(--c-photo);
 }
 
 .row.photo .type-label {
-  color: #AE543A;
+  color: var(--c-photo);
 }
 
 .row.photo:hover .row-title {
   opacity: 1;
-  color: #AE543A;
+  color: var(--c-photo);
 }
 
 .row.photo:hover .photo-count {
-  color: #AE543A;
+  color: var(--c-photo);
+}
+
+/* Photo Micro-interaction: subtle zoom on hover */
+.photo-thumb img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.row.photo:hover .photo-thumb img {
+  transform: scale(1.03);
 }
 
 /* ── AI accent ── */
 .row.ai .type-icon svg path {
-  stroke: #4E89AF;
+  stroke: var(--c-ai);
 }
 
 .row.ai .type-label {
-  color: #4E89AF;
+  color: var(--c-ai);
 }
 
 .row.ai:hover .row-title {
   opacity: 1;
-  color: #4E89AF;
+  color: var(--c-ai);
 }
 
 .row.ai .ai-line.q {
-  border-left-color: rgba(78, 137, 175, 0.4);
+  border-left-color: rgba(78, 137, 175, 0.4); /* fallback/base */
+}
+
+@media (prefers-color-scheme: dark) {
+  .row.ai .ai-line.q {
+    border-left-color: rgba(103, 162, 203, 0.4);
+  }
 }
 
 .row.ai:hover .ai-line.q {
-  border-left-color: rgba(78, 137, 175, 0.7);
+  border-left-color: var(--c-ai);
 }
 
 /* ── Shared hover transition ── */

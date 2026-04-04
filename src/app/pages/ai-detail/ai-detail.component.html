@@ -1,0 +1,46 @@
+<main class="detail-page" *ngIf="item">
+  <!-- Hero header -->
+  <header class="detail-header container">
+    <div class="header-meta">
+      <span class="accent-bar"></span>
+      <span class="type-badge">Dialogue</span>
+      <span class="meta-dot">·</span>
+      <time class="meta-date">{{ item.date }}</time>
+    </div>
+    <h1 class="detail-title">{{ item.title }}</h1>
+    <div class="header-rule"></div>
+  </header>
+
+  <!-- Chat transcript -->
+  <section class="transcript container">
+    <div class="transcript-inner">
+      <ng-container *ngFor="let msg of (item.fullExchange || item.aiExchange); let i = index">
+        <div class="turn" [ngClass]="msg.role" [style.animation-delay]="(i * 0.08) + 's'">
+          <div class="turn-indicator">
+            <!-- Human icon -->
+            <svg *ngIf="msg.role === 'q'" class="turn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="5.5" r="3" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M2.5 14.5C2.5 11.5 5 9.5 8 9.5C11 9.5 13.5 11.5 13.5 14.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <!-- AI icon -->
+            <svg *ngIf="msg.role === 'a'" class="turn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.2"/>
+              <circle cx="6" cy="7.5" r="1" fill="currentColor"/>
+              <circle cx="10" cy="7.5" r="1" fill="currentColor"/>
+              <path d="M5.5 10.5Q8 12.5 10.5 10.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/>
+            </svg>
+            <span class="turn-label">{{ msg.role === 'q' ? 'Human' : 'AI' }}</span>
+          </div>
+          <div class="turn-bubble">
+            {{ msg.text }}
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </section>
+</main>
+
+<div *ngIf="!item" class="not-found container">
+  <span class="not-found-code">404</span>
+  <p class="not-found-text">Dialogue not found.</p>
+</div>

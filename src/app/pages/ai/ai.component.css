@@ -25,7 +25,7 @@
   display: block;
   width: 32px;
   height: 2px;
-  background: #4E89AF;
+  background: var(--c-ai);
   margin-top: 1.2rem;
   border-radius: 1px;
 }
