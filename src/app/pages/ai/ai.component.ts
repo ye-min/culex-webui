@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FeedItem } from '../../shared/models/feed-item.model';
+import { Observable } from 'rxjs';
+import { FeedDisplayItem } from '../../shared/models/feed-item.model';
 import { FeedDataService } from '../../core/services/feed-data.service';
 
 @Component({
@@ -8,13 +9,13 @@ import { FeedDataService } from '../../core/services/feed-data.service';
   styleUrls: ['./ai.component.css']
 })
 export class AiComponent {
-  feedItems: FeedItem[];
+  feedItems$: Observable<FeedDisplayItem[]>;
 
   constructor(private feedData: FeedDataService) {
-    this.feedItems = this.feedData.getItemsByType('ai');
+    this.feedItems$ = this.feedData.getAiFeedItems();
   }
 
-  trackByLink(index: number, item: FeedItem): string {
+  trackByLink(_index: number, item: FeedDisplayItem): string {
     return item.link;
   }
 }

@@ -1,23 +1,27 @@
-<main class="detail-page" *ngIf="item">
-  <!-- Hero header -->
-  <header class="detail-header container">
-    <div class="header-meta">
-      <span class="accent-bar"></span>
-      <span class="type-badge">Writing</span>
-      <span class="meta-dot">·</span>
-      <time class="meta-date">{{ item.date }}</time>
-    </div>
-    <h1 class="detail-title">{{ item.title }}</h1>
-    <div class="header-rule"></div>
-  </header>
+<ng-container *ngIf="article$ | async as article; else notFound">
+  <main class="detail-page">
+    <!-- Hero header -->
+    <header class="detail-header container">
+      <div class="header-meta">
+        <span class="accent-bar"></span>
+        <span class="type-badge">Writing</span>
+        <span class="meta-dot">·</span>
+        <time class="meta-date">{{ article.meta.date }}</time>
+      </div>
+      <h1 class="detail-title">{{ article.meta.title }}</h1>
+      <div class="header-rule"></div>
+    </header>
 
-  <!-- Article body -->
-  <article class="detail-body container">
-    <div class="body-content" [innerHTML]="item.content || item.excerpt"></div>
-  </article>
-</main>
+    <!-- Article body -->
+    <article class="detail-body container">
+      <div class="body-content" [innerHTML]="article.html"></div>
+    </article>
+  </main>
+</ng-container>
 
-<div *ngIf="!item" class="not-found container">
-  <span class="not-found-code">404</span>
-  <p class="not-found-text">Article not found.</p>
-</div>
+<ng-template #notFound>
+  <div class="not-found container">
+    <span class="not-found-code">404</span>
+    <p class="not-found-text">Article not found.</p>
+  </div>
+</ng-template>

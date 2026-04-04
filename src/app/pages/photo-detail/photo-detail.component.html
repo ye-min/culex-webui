@@ -1,39 +1,42 @@
-<main class="detail-page" *ngIf="item">
-  <!-- Hero header -->
-  <header class="detail-header container">
-    <div class="header-meta">
-      <span class="accent-bar"></span>
-      <span class="type-badge">Photo</span>
-      <span class="meta-dot">·</span>
-      <time class="meta-date">{{ item.date }}</time>
-      <span class="meta-dot" *ngIf="item.fullPhotos">·</span>
-      <span class="photo-count" *ngIf="item.fullPhotos">{{ item.fullPhotos.length }} photos</span>
-    </div>
-    <h1 class="detail-title">{{ item.title }}</h1>
-    <div class="header-rule"></div>
-  </header>
-
-  <!-- Photo Gallery -->
-  <section class="gallery container" *ngIf="item.fullPhotos">
-    <div class="gallery-grid">
-      <div class="gallery-item" 
-           *ngFor="let photo of item.fullPhotos; let i = index"
-           [ngClass]="photo.gridClass || 'span-1'"
-           [style.animation-delay]="(i * 0.1) + 's'">
-        <div class="img-frame">
-          <img [src]="photo.src" 
-               [alt]="photo.alt" 
-               loading="lazy" 
-               (load)="onImageLoad($event)"
-               (error)="onImageError($event, photo.alt)"/>
-        </div>
-        <span class="img-caption" *ngIf="photo.alt">{{ photo.alt }}</span>
+<ng-container *ngIf="album$ | async as album; else notFound">
+  <main class="detail-page">
+    <!-- Hero header -->
+    <header class="detail-header container">
+      <div class="header-meta">
+        <span class="accent-bar"></span>
+        <span class="type-badge">Photo</span>
+        <span class="meta-dot">·</span>
+        <time class="meta-date">{{ album.date }}</time>
+        <span class="meta-dot">·</span>
+        <span class="photo-count">{{ album.photos.length }} photos</span>
       </div>
-    </div>
-  </section>
-</main>
+      <h1 class="detail-title">{{ album.title }}</h1>
+      <div class="header-rule"></div>
+    </header>
 
-<div *ngIf="!item" class="not-found container">
-  <span class="not-found-code">404</span>
-  <p class="not-found-text">Photo set not found.</p>
-</div>
+    <!-- Photo Gallery -->
+    <section class="gallery container">
+      <div class="gallery-grid">
+        <div class="gallery-item"
+             *ngFor="let photo of album.photos; let i = index"
+             [ngClass]="i === 0 ? 'span-2' : 'span-1'"
+             [style.animation-delay]="(i * 0.1) + 's'">
+          <div class="img-frame">
+            <img [src]="photo.file"
+                 [alt]="photo.caption"
+                 loading="lazy"
+                 (load)="onImageLoad($event)"/>
+          </div>
+          <span class="img-caption" *ngIf="photo.caption">{{ photo.caption }}</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</ng-container>
+
+<ng-template #notFound>
+  <div class="not-found container">
+    <span class="not-found-code">404</span>
+    <p class="not-found-text">Photo set not found.</p>
+  </div>
+</ng-template>

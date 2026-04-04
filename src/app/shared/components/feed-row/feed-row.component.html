@@ -34,25 +34,24 @@
   <!-- Right: content varies by type -->
   <div class="row-right" [ngSwitch]="item.type">
 
-    <!-- writing: excerpt -->
+    <!-- writing: 简介 -->
     <p *ngSwitchCase="'writing'" class="row-excerpt" [innerHTML]="item.excerpt"></p>
 
-    <!-- photo: thumbnail strip -->
+    <!-- photo: 方图组 + 总张数 -->
     <div *ngSwitchCase="'photo'" class="photo-strip">
-      <div *ngFor="let photo of item.photos"
-           class="photo-thumb"
-           [ngClass]="photo.type">
+      <div class="photo-thumb sq"
+           *ngFor="let src of (item.coverImages | slice:0:5)">
+        <img [src]="src" [alt]="item.title" loading="lazy">
       </div>
       <span *ngIf="item.photoCount" class="photo-count">+{{ item.photoCount }}</span>
     </div>
 
-    <!-- ai: exchange -->
+    <!-- ai: 一问一答预览 -->
     <div *ngSwitchCase="'ai'" class="ai-exchange">
-      <div *ngFor="let line of item.aiExchange"
-           class="ai-line"
-           [ngClass]="{ q: line.role === 'q' }">
-        {{ line.text }}
-      </div>
+      <ng-container *ngIf="item.aiPreview">
+        <div class="ai-line q">{{ item.aiPreview.q }}</div>
+        <div class="ai-line">{{ item.aiPreview.a }}</div>
+      </ng-container>
     </div>
 
   </div>

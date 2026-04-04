@@ -1,0 +1,30 @@
+[
+  {
+    "id": "kyoto-winter",
+    "title": "京都，冬末的几个下午",
+    "date": "2026-03-20",
+    "cover": "assets/photos/kyoto-winter/001.jpg",
+    "photos": [
+      { "file": "assets/photos/kyoto-winter/001.jpg", "caption": "鸭川边的枯树" },
+      { "file": "assets/photos/kyoto-winter/002.jpg", "caption": "京都小巷" },
+      { "file": "assets/photos/kyoto-winter/003.jpg", "caption": "电车驶过" },
+      { "file": "assets/photos/kyoto-winter/004.jpg", "caption": "咖啡馆一角" },
+      { "file": "assets/photos/kyoto-winter/005.jpg", "caption": "" }
+    ]
+  },
+  {
+    "id": "shanghai-weekend",
+    "title": "上海，某个平常的周末",
+    "date": "2026-02-18",
+    "cover": [
+      "assets/photos/shanghai-weekend/001.jpg",
+      "assets/photos/shanghai-weekend/002.jpg",
+      "assets/photos/shanghai-weekend/003.jpg"
+    ],
+    "photos": [
+      { "file": "assets/photos/shanghai-weekend/001.jpg", "caption": "梧桐树下的路标" },
+      { "file": "assets/photos/shanghai-weekend/002.jpg", "caption": "老洋房的窗台" },
+      { "file": "assets/photos/shanghai-weekend/003.jpg", "caption": "雨后的淮海路" }
+    ]
+  }
+]

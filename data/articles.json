@@ -1,0 +1,26 @@
+[
+  {
+    "date": "2026-03-28",
+    "title": "Diffusion 模型中的注意力机制：一次拆解",
+    "excerpt": "从 U-Net 的跨注意力层出发，试图弄清楚文本条件是如何在去噪过程中<em>一步步渗入图像结构</em>的。结论比预期复杂。",
+    "file": "assets/content/articles/diffusion-attention.md"
+  },
+  {
+    "date": "2026-03-14",
+    "title": "关于工具与思维的关系，我改变了看法",
+    "excerpt": "以前觉得好工具应该透明，用着感觉不到它。现在觉得这个标准<em>本身就是问题</em>——工具应该有摩擦，摩擦才是思维发生的地方。",
+    "file": "assets/content/articles/tools-and-thinking.md"
+  },
+  {
+    "date": "2026-02-27",
+    "title": "Angular Signal 的设计哲学与实践记录",
+    "excerpt": "Signal 不是新概念，但 Angular 的实现方式有它自己的立场。这篇是用了三个月之后的<em>真实使用感受</em>，不是文档翻译。",
+    "file": "assets/content/articles/angular-signal.md"
+  },
+  {
+    "date": "2026-01-31",
+    "title": "用 CSS Grid 实现非对称排版布局",
+    "excerpt": "对称是默认值，不对称需要理由。这篇记录了<em>几个有说服力的比例关系</em>，以及它们背后的视觉逻辑。",
+    "file": "assets/content/articles/css-grid-asymmetric.md"
+  }
+]

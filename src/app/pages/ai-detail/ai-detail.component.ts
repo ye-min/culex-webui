@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { FeedDataService } from '../../core/services/feed-data.service';
-import { FeedItem } from '../../shared/models/feed-item.model';
+import { AiChat } from '../../shared/models/feed-item.model';
 
 @Component({
   selector: 'app-ai-detail',
@@ -9,17 +11,19 @@ import { FeedItem } from '../../shared/models/feed-item.model';
   styleUrls: ['./ai-detail.component.css']
 })
 export class AiDetailComponent implements OnInit {
-  item: FeedItem | undefined;
+  chat$: Observable<AiChat | null> = of(null);
 
   constructor(
     private route: ActivatedRoute,
-    private feedService: FeedDataService
+    private feedData: FeedDataService
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.item = this.feedService.getItemByLink(`/ai/${id}`);
-    }
+    if (!id) return;
+
+    this.chat$ = this.feedData.getAiChatById(id).pipe(
+      catchError(() => of(null))
+    ) as Observable<AiChat | null>;
   }
 }

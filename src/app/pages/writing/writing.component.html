@@ -5,7 +5,7 @@
       <p class="page-desc">思考、记录与拆解</p>
     </header>
     <app-feed-row
-      *ngFor="let item of feedItems; trackBy: trackByLink"
+      *ngFor="let item of feedItems$ | async; trackBy: trackByLink"
       [item]="item">
     </app-feed-row>
   </div>
