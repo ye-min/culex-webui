@@ -26,9 +26,9 @@
 git init
 git add .
 git commit -m "init"
-git branch -M main
+git branch -M master
 git remote add origin https://github.com/<你的用户名>/<仓库名>.git
-git push -u origin main
+git push -u origin master
 ```
 
 > 如果本地已有 git 仓库，跳过 `git init`，直接 add remote 和 push。
@@ -46,7 +46,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - master
 
 permissions:
   contents: write
@@ -56,34 +57,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout 🛎️
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js 🔧
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install and Build 🔧
+        run: |
+          npm install
+          npm run build -- --configuration production --base-href /
+          cp dist/culex-webui/index.html dist/culex-webui/404.html
 
-      - name: Build
-        run: npm run build -- --configuration production --base-href /
-
-      - name: Fix SPA routing (copy index.html → 404.html)
-        run: cp dist/culex-webui/index.html dist/culex-webui/404.html
-
-      - name: Write CNAME
-        run: echo "你的域名" > dist/culex-webui/CNAME
-        # 示例：echo "blog.example.com" > dist/culex-webui/CNAME
-        # 如果暂时不用自定义域名，删掉这一步
-
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/culex-webui
+          folder: dist/culex-webui
+          branch: gh-pages
+          cname: culex.cvzer.com
 ```
 
 > **为什么需要 404.html？**
