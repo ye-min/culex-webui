@@ -153,8 +153,7 @@ git push
 编辑 `.github/workflows/deploy.yml`，将 Write CNAME 步骤改为你的实际域名：
 
 ```yaml
-      - name: Write CNAME
-        run: echo "www.example.com" > dist/culex-webui/CNAME
+      cname: culex.cvzer.com
 ```
 
 推送后重新触发构建即可。
