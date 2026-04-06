@@ -119,9 +119,6 @@
 /* ── Group divider ── */
 .group-divider {
   margin: 3rem 0;
-  height: 0.5px;
-  background: var(--border-2);
-  opacity: 0.5;
 }
 
 /* ── Image Frame ── */

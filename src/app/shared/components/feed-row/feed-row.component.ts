@@ -8,4 +8,9 @@ import { FeedDisplayItem } from '../../models/feed-item.model';
 })
 export class FeedRowComponent {
   @Input() item!: FeedDisplayItem;
+
+  getRemainingCount(item: FeedDisplayItem): number {
+    const shown = Math.min(item.coverImages?.length ?? 0, 5);
+    return (item.photoCount ?? 0) - shown;
+  }
 }

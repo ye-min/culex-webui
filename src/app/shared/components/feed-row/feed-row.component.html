@@ -43,7 +43,7 @@
            *ngFor="let src of (item.coverImages | slice:0:5)">
         <img [src]="src" [alt]="item.title" loading="lazy">
       </div>
-      <span *ngIf="item.photoCount" class="photo-count">+{{ item.photoCount }}</span>
+      <span *ngIf="getRemainingCount(item) > 0" class="photo-count">+{{ getRemainingCount(item) }}</span>
     </div>
 
     <!-- ai: 一问一答预览 -->
