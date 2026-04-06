@@ -3,7 +3,10 @@
     "id": "tju",
     "title": "天津大学",
     "date": "2026-04-04",
-    "cover": "assets/photos/tju-20260404/DSC00306.png",
+    "cover": [
+      "assets/photos/tju-20260404/DSC00306.png",
+      "assets/photos/tju-20260404/DSC00300.png"
+    ],
     "groups": [
       {
         "type": "column",
