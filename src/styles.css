@@ -18,7 +18,7 @@
   --serif:    'Cormorant Garamond', Georgia, serif;
   --mono:     'JetBrains Mono', monospace;
   --sans:     system-ui, -apple-system, sans-serif;
-  --max:      880px;
+  --max:      1080px;
   --pad:      clamp(1.2rem, 4vw, 3rem);
 }
 

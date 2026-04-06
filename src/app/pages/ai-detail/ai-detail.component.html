@@ -34,7 +34,7 @@
             </svg>
             <span class="turn-label">{{ msg.role === 'user' ? 'Human' : 'AI' }}</span>
           </div>
-          <div class="turn-bubble">{{ msg.content }}</div>
+          <div class="turn-bubble" [innerHTML]="renderMessage(msg.content)"></div>
         </div>
       </div>
     </section>
