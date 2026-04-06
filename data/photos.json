@@ -1,30 +1,46 @@
 [
   {
-    "id": "kyoto-winter",
-    "title": "京都，冬末的几个下午",
-    "date": "2026-03-20",
-    "cover": "assets/photos/kyoto-winter/001.jpg",
-    "photos": [
-      { "file": "assets/photos/kyoto-winter/001.jpg", "caption": "鸭川边的枯树" },
-      { "file": "assets/photos/kyoto-winter/002.jpg", "caption": "京都小巷" },
-      { "file": "assets/photos/kyoto-winter/003.jpg", "caption": "电车驶过" },
-      { "file": "assets/photos/kyoto-winter/004.jpg", "caption": "咖啡馆一角" },
-      { "file": "assets/photos/kyoto-winter/005.jpg", "caption": "" }
-    ]
-  },
-  {
-    "id": "shanghai-weekend",
-    "title": "上海，某个平常的周末",
-    "date": "2026-02-18",
-    "cover": [
-      "assets/photos/shanghai-weekend/001.jpg",
-      "assets/photos/shanghai-weekend/002.jpg",
-      "assets/photos/shanghai-weekend/003.jpg"
-    ],
-    "photos": [
-      { "file": "assets/photos/shanghai-weekend/001.jpg", "caption": "梧桐树下的路标" },
-      { "file": "assets/photos/shanghai-weekend/002.jpg", "caption": "老洋房的窗台" },
-      { "file": "assets/photos/shanghai-weekend/003.jpg", "caption": "雨后的淮海路" }
+    "id": "tju",
+    "title": "天津大学",
+    "date": "2026-04-04",
+    "cover": "assets/photos/tju-20260404/DSC00306.png",
+    "groups": [
+      {
+        "type": "column",
+        "photos": [
+          { "file": "assets/photos/tju-20260404/DSC00277.png", "caption": "宿舍" },
+          { "file": "assets/photos/tju-20260404/DSC00278.png", "caption": "集贤道" }
+        ]
+      },
+      {
+        "type": "row",
+        "photos": [
+          { "file": "assets/photos/tju-20260404/DSC00306.png", "caption": "大学生活动中心" }
+        ]
+      },
+      {
+        "type": "column",
+        "photos": [
+          { "file": "assets/photos/tju-20260404/DSC00292.png", "caption": "桃树" },
+          { "file": "assets/photos/tju-20260404/DSC00293.png", "caption": "另一株桃树" },
+          { "file": "assets/photos/tju-20260404/DSC00298.png", "caption": "鸭子" },
+          { "file": "assets/photos/tju-20260404/DSC00316.png", "caption": "苹果花" },
+          { "file": "assets/photos/tju-20260404/DSC00318.png", "caption": "另一朵苹果花" },
+          { "file": "assets/photos/tju-20260404/DSC00319.png", "caption": "9楼前" }
+        ]
+      },
+      {
+        "type": "row",
+        "photos": [
+          { "file": "assets/photos/tju-20260404/DSC00300.png", "caption": "26斋" }
+        ]
+      },
+      {
+        "type": "column",
+        "photos": [
+          { "file": "assets/photos/tju-20260404/DSC00352.png", "caption": "铭德道" }
+        ]
+      }
     ]
   }
 ]

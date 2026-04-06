@@ -6,6 +6,7 @@ import {
   FeedDisplayItem,
   ArticleIndex,
   PhotoAlbum,
+  PhotoGroup,
   AiChatIndex,
   AiChat,
 } from '../../shared/models/feed-item.model';
@@ -48,7 +49,7 @@ export class FeedDataService {
             title: a.title,
             link: `/photos/${a.id}`,
             coverImages: Array.isArray(a.cover) ? a.cover : [a.cover],
-            photoCount: a.photos.length,
+            photoCount: a.groups.reduce((sum: number, g: PhotoGroup) => sum + g.photos.length, 0),
           })),
           ...chats.map((c) => ({
             date: c.date,
@@ -86,7 +87,7 @@ export class FeedDataService {
           title: a.title,
           link: `/photos/${a.id}`,
           coverImages: Array.isArray(a.cover) ? a.cover : [a.cover],
-            photoCount: a.photos.length,
+            photoCount: a.groups.reduce((sum: number, g: PhotoGroup) => sum + g.photos.length, 0),
         }))
       )
     );
@@ -125,6 +126,20 @@ export class FeedDataService {
   getPhotoAlbumById(id: string): Observable<PhotoAlbum | undefined> {
     return this.getPhotoAlbums().pipe(
       map((albums) => albums.find((a) => a.id === id))
+    );
+  }
+
+  /** 读取当天的每日词条，无匹配时取最后一条 */
+  getDailyWord(): Observable<string> {
+    return this.http.get<{ date: string; word: string }[]>('data/daily-words.json').pipe(
+      map(entries => {
+        const today = new Date().toISOString().slice(0, 10);
+        const sorted = [...entries].sort((a, b) => a.date.localeCompare(b.date));
+        const past = sorted.filter(e => e.date <= today);
+        return past.length > 0
+          ? past[past.length - 1].word
+          : sorted[sorted.length - 1].word;
+      })
     );
   }
 

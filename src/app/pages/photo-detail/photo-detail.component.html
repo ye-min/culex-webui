@@ -8,7 +8,7 @@
         <span class="meta-dot">·</span>
         <time class="meta-date">{{ album.date }}</time>
         <span class="meta-dot">·</span>
-        <span class="photo-count">{{ album.photos.length }} photos</span>
+        <span class="photo-count">{{ getTotalPhotos(album) }} photos</span>
       </div>
       <h1 class="detail-title">{{ album.title }}</h1>
       <div class="header-rule"></div>
@@ -16,22 +16,61 @@
 
     <!-- Photo Gallery -->
     <section class="gallery container">
-      <div class="gallery-grid">
-        <div class="gallery-item"
-             *ngFor="let photo of album.photos; let i = index"
-             [ngClass]="i === 0 ? 'span-2' : 'span-1'"
-             [style.animation-delay]="(i * 0.1) + 's'">
-          <div class="img-frame">
-            <img [src]="photo.file"
-                 [alt]="photo.caption"
-                 loading="lazy"
-                 (load)="onImageLoad($event)"/>
+      <ng-container *ngFor="let group of album.groups; let gi = index">
+
+        <div class="group-divider" *ngIf="gi > 0"></div>
+
+        <!-- Column group: two-column masonry -->
+        <div class="gallery-grid" *ngIf="group.type === 'column'">
+          <div class="gallery-item"
+               *ngFor="let photo of group.photos; let i = index"
+               [style.animation-delay]="((getGroupOffset(album, gi) + i) * 0.08) + 's'">
+            <div class="img-frame"
+                 (click)="openLightbox(photo, getGroupOffset(album, gi) + i, getTotalPhotos(album))">
+              <img [src]="photo.file" [alt]="photo.caption" loading="lazy" (load)="onImageLoad($event)"/>
+            </div>
+            <span class="img-caption" *ngIf="photo.caption">{{ photo.caption }}</span>
           </div>
-          <span class="img-caption" *ngIf="photo.caption">{{ photo.caption }}</span>
         </div>
-      </div>
+
+        <!-- Row group: single-column full-width -->
+        <div class="gallery-full" *ngIf="group.type === 'row'">
+          <div class="gallery-item"
+               *ngFor="let photo of group.photos; let i = index"
+               [style.animation-delay]="((getGroupOffset(album, gi) + i) * 0.08) + 's'">
+            <div class="img-frame"
+                 (click)="openLightbox(photo, getGroupOffset(album, gi) + i, getTotalPhotos(album))">
+              <img [src]="photo.file" [alt]="photo.caption" loading="lazy" (load)="onImageLoad($event)"/>
+            </div>
+            <span class="img-caption" *ngIf="photo.caption">{{ photo.caption }}</span>
+          </div>
+        </div>
+
+      </ng-container>
     </section>
   </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox-overlay"
+       *ngIf="lightboxPhoto"
+       (click)="closeLightbox()">
+    <button class="lightbox-close" (click)="closeLightbox()" aria-label="关闭">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <line x1="3" y1="3" x2="17" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="17" y1="3" x2="3" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="lightbox-content" (click)="$event.stopPropagation()">
+      <img class="lightbox-img"
+           [src]="lightboxPhoto.file"
+           [alt]="lightboxPhoto.caption"
+           (click)="closeLightbox()"/>
+      <div class="lightbox-info">
+        <span class="lightbox-index">{{ lightboxIndex + 1 }} / {{ lightboxTotal }}</span>
+        <span class="lightbox-caption" *ngIf="lightboxPhoto.caption">{{ lightboxPhoto.caption }}</span>
+      </div>
+    </div>
+  </div>
 </ng-container>
 
 <ng-template #notFound>

@@ -24,13 +24,19 @@ export interface PhotoItem {
   caption: string;
 }
 
+/** data/photos.json 中相册内的照片分组 */
+export interface PhotoGroup {
+  type: 'column' | 'row';  // column: 两列流布局，row: 单列全宽
+  photos: PhotoItem[];
+}
+
 /** data/photos.json 中每条相册记录的结构 */
 export interface PhotoAlbum {
   id: string;
   title: string;
   date: string;
   cover: string | string[]; // 单张封面或多张封面
-  photos: PhotoItem[];
+  groups: PhotoGroup[];
 }
 
 /** data/ai-chats.json 中每条记录的结构 */

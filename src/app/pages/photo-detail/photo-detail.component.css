@@ -2,6 +2,18 @@
    Photo Detail — Gallery Layout
    ══════════════════════════════════════ */
 
+/* Override global fadeSlideUp (which uses transform) with opacity-only animation.
+   Any transform on the host element creates a new containing block, breaking
+   position:fixed children like the lightbox overlay. */
+:host {
+  animation: photoDetailFadeIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes photoDetailFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 .detail-page {
   padding-bottom: 10rem;
 }
@@ -80,55 +92,53 @@
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  gap: 2.5rem 1rem;
 }
 
 .gallery-item {
   opacity: 0;
-  animation: galleryFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: galleryFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.gallery-item.wide {
+  grid-column: span 2;
 }
 
 @keyframes galleryFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* Grid spanning classes */
-.span-1 {
-  grid-column: span 1;
+/* ── Full-width group ── */
+.gallery-full {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
 
-.span-2 {
-  grid-column: span 1;
-}
-
-.span-wide {
-  grid-column: 1 / -1;
+/* ── Group divider ── */
+.group-divider {
+  margin: 3rem 0;
+  height: 0.5px;
+  background: var(--border-2);
+  opacity: 0.5;
 }
 
 /* ── Image Frame ── */
 .img-frame {
   width: 100%;
-  aspect-ratio: 3 / 2;
   background: var(--border);
   overflow: hidden;
   border-radius: 2px;
-  position: relative;
+  cursor: pointer;
 }
 
 .img-frame img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
   opacity: 0;
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.6s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .img-frame img.loaded {
@@ -146,8 +156,96 @@
   font-size: 10px;
   letter-spacing: 0.04em;
   color: var(--fg-3);
-  margin-top: 0.6rem;
+  margin-top: 0.75rem;
   padding-left: 2px;
+}
+
+/* ══════════════════════════════════════
+   Lightbox
+   ══════════════════════════════════════ */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lbFadeIn 0.2s ease;
+}
+
+@keyframes lbFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.lightbox-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: min(90vw, 1000px);
+  max-height: 90vh;
+}
+
+.lightbox-img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(90vh - 4rem);
+  object-fit: contain;
+  border-radius: 2px;
+  cursor: default;
+  animation: lbImgIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes lbImgIn {
+  from { transform: scale(0.96); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.lightbox-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  min-height: 1.5rem;
+}
+
+.lightbox-index {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.lightbox-caption {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ── Broken Image Fallback ── */
@@ -188,20 +286,12 @@
 }
 
 /* ── Responsive ── */
-@media (max-width: 640px) {
+@media (max-width: 480px) {
   .gallery-grid {
     grid-template-columns: 1fr;
   }
 
-  .gallery-item {
-    grid-column: 1 / -1 !important;
-  }
-
-  .detail-title {
-    max-width: none;
-  }
-
-  .img-frame {
-    aspect-ratio: 4 / 3;
+  .gallery-item.wide {
+    grid-column: span 1;
   }
 }

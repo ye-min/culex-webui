@@ -1,6 +1,6 @@
 <nav id="main-nav">
   <div class="container">
-    <a routerLink="/" class="logo">Culex</a>
+    <a routerLink="/" class="logo">{{ word }}</a>
     <ul class="nav-links">
       <li *ngFor="let link of navLinks">
         <a [routerLink]="link.path"
