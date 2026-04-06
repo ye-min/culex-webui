@@ -1,0 +1,22 @@
+[
+  {
+    "id": "recursive-aesthetics",
+    "title": "递归美学与中文诗歌结构",
+    "date": "2026-03-07",
+    "preview": {
+      "q": "《春江花月夜》里的意象是不是有某种递归结构？",
+      "a": "有意思——「江畔何人初见月」到「何处相思明月楼」，确实像是在同一个意象上不断折叠……"
+    },
+    "file": "assets/content/ai-chats/recursive-aesthetics.json"
+  },
+  {
+    "id": "rag-semantic-retrieval",
+    "title": "RAG 系统里语义检索的边界问题",
+    "date": "2026-02-09",
+    "preview": {
+      "q": "向量空间里的距离，真的等于语义距离吗？",
+      "a": "不完全等于。余弦相似度度量的是方向而非含义，两个意思相反的句子在某些嵌入空间里可能很近……"
+    },
+    "file": "assets/content/ai-chats/rag-semantic-retrieval.json"
+  }
+]

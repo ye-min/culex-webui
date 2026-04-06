@@ -1,0 +1,46 @@
+[
+  {
+    "id": "tju",
+    "title": "天津大学",
+    "date": "2026-04-04",
+    "cover": "assets/photos/tju-20260404/DSC00306.png",
+    "groups": [
+      {
+        "type": "column",
+        "photos": [
+          { "file": "assets/photos/tju-20260404/DSC00277.png", "caption": "宿舍" },
+          { "file": "assets/photos/tju-20260404/DSC00278.png", "caption": "集贤道" }
+        ]
+      },
+      {
+        "type": "row",
+        "photos": [
+          { "file": "assets/photos/tju-20260404/DSC00306.png", "caption": "大学生活动中心" }
+        ]
+      },
+      {
+        "type": "column",
+        "photos": [
+          { "file": "assets/photos/tju-20260404/DSC00292.png", "caption": "桃树" },
+          { "file": "assets/photos/tju-20260404/DSC00293.png", "caption": "另一株桃树" },
+          { "file": "assets/photos/tju-20260404/DSC00298.png", "caption": "鸭子" },
+          { "file": "assets/photos/tju-20260404/DSC00316.png", "caption": "苹果花" },
+          { "file": "assets/photos/tju-20260404/DSC00318.png", "caption": "另一朵苹果花" },
+          { "file": "assets/photos/tju-20260404/DSC00319.png", "caption": "9楼前" }
+        ]
+      },
+      {
+        "type": "row",
+        "photos": [
+          { "file": "assets/photos/tju-20260404/DSC00300.png", "caption": "26斋" }
+        ]
+      },
+      {
+        "type": "column",
+        "photos": [
+          { "file": "assets/photos/tju-20260404/DSC00352.png", "caption": "铭德道" }
+        ]
+      }
+    ]
+  }
+]
