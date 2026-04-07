@@ -32,6 +32,22 @@
   color: var(--fg);
 }
 
+/* ── Inline icons ── */
+.tag-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.4em;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+.icon-lego  { color: #C8962A; }
+.icon-code  { color: #4E89AF; }
+.icon-photo { color: #AE543A; }
+.icon-music { color: #9B7BB8; }
+.icon-ai    { color: #6B8F8A; }
+
 /* ── Links ── */
 .about-links {
   margin-top: 3rem;

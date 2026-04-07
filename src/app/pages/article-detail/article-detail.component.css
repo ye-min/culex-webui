@@ -165,11 +165,14 @@
   margin: 3rem 0;
 }
 
-::ng-deep .body-content table {
-  display: block;
+::ng-deep .body-content .table-scroll {
   overflow-x: auto;
-  border-collapse: collapse;
   margin: 2rem 0;
+}
+
+::ng-deep .body-content table {
+  width: 100%;
+  border-collapse: collapse;
   font-size: 0.88rem;
   line-height: 1.6;
 }

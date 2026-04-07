@@ -33,7 +33,11 @@ export class ArticleDetailComponent implements OnInit {
     this.article$ = this.feedData.getArticleBySlug(slug).pipe(
       map(({ meta, content }) => ({
         meta,
-        html: this.sanitizer.bypassSecurityTrustHtml(marked.parse(content) as string)
+        html: this.sanitizer.bypassSecurityTrustHtml(
+          (marked.parse(content) as string)
+            .replace(/<table>/g, '<div class="table-scroll"><table>')
+            .replace(/<\/table>/g, '</table></div>')
+        )
       })),
       catchError(() => of(null))
     );

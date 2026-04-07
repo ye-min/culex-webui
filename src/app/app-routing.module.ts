@@ -8,6 +8,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { ArticleDetailComponent } from './pages/article-detail/article-detail.component';
 import { PhotoDetailComponent } from './pages/photo-detail/photo-detail.component';
 import { AiDetailComponent } from './pages/ai-detail/ai-detail.component';
+import { NavComponent } from './pages/nav/nav.component';
 
 const routes: Routes = [
   { path: '',        component: HomeComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'ai',      component: AiComponent },
   { path: 'ai/:id', component: AiDetailComponent },
   { path: 'about',   component: AboutComponent },
+  { path: 'nav',     component: NavComponent },
   { path: '**',      redirectTo: '' }
 ];
 

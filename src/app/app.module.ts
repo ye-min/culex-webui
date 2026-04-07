@@ -15,6 +15,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { ArticleDetailComponent } from './pages/article-detail/article-detail.component';
 import { PhotoDetailComponent } from './pages/photo-detail/photo-detail.component';
 import { AiDetailComponent } from './pages/ai-detail/ai-detail.component';
+import { NavComponent } from './pages/nav/nav.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AiDetailComponent } from './pages/ai-detail/ai-detail.component';
     AboutComponent,
     ArticleDetailComponent,
     PhotoDetailComponent,
-    AiDetailComponent
+    AiDetailComponent,
+    NavComponent
   ],
   imports: [
     BrowserModule,

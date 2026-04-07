@@ -16,10 +16,10 @@ Angular 个人网站，包含技术文章、日常照片、AI 对话三个模块
 - 新增内容时，**同时更新对应的索引 JSON 文件**
 
 ## 编码规范
-- 使用 standalone components，不创建 NgModule
+- 使用 NgModule（`app.module.ts`），新页面组件需在此声明
 - 服务用 `providedIn: 'root'`，数据加载返回 `Observable` 而非 Promise
 - 文件命名：`kebab-case`；类命名：`PascalCase`
-- 每个功能模块有自己的路由文件 `*.routes.ts`
+- 路由统一在 `app-routing.module.ts` 注册
 - 禁止在模板中使用 `any` 类型
 
 ## 禁止事项
@@ -31,6 +31,16 @@ Angular 个人网站，包含技术文章、日常照片、AI 对话三个模块
 ## 部署
 - 托管于 GitHub Pages，通过 GitHub Actions 自动构建发布。
 - 自定义域名，无子路径。
+
+## 关键文件位置
+- 路由注册：`src/app/app-routing.module.ts`
+- 模块声明：`src/app/app.module.ts`
+- 导航栏：`src/app/core/components/navbar/navbar.component.ts`
+- 全局样式 & Design Tokens：`src/styles.css`
+- 数据服务：`src/app/core/services/feed-data.service.ts`
+- 数据模型：`src/app/shared/models/feed-item.model.ts`
+- 页面组件目录：`src/app/pages/<name>/<name>.component.{ts,html,css}`
+- 本地数据文件：`data/articles.json`、`data/photos.json`、`data/ai-chats.json`、`data/bookmarks.json`
 
 ## 参考文档（按需引入）
 - @docs/content-schema.md   # 所有内容的数据结构定义
