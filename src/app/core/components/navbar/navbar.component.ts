@@ -13,9 +13,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   navLinks = [
     { label: 'Writing', path: '/writing' },
     { label: 'Photos',  path: '/photos' },
-    { label: 'AI',      path: '/ai' },
-    { label: 'Nav',     path: '/nav' },
-    { label: 'About',   path: '/about' }
+    { label: 'AI',      path: '/ai' }
   ];
 
   constructor(private feedData: FeedDataService) {}

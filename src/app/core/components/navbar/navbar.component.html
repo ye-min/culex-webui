@@ -1,14 +1,22 @@
 <nav id="main-nav">
   <div class="container">
     <a routerLink="/" class="logo">{{ word }}</a>
-    <ul class="nav-links">
-      <li *ngFor="let link of navLinks">
-        <a [routerLink]="link.path"
-           routerLinkActive="active"
-           [routerLinkActiveOptions]="{ exact: true }">
-          {{ link.label }}
-        </a>
-      </li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li *ngFor="let link of navLinks">
+          <a [routerLink]="link.path"
+             routerLinkActive="active"
+             [routerLinkActiveOptions]="{ exact: true }">
+            {{ link.label }}
+          </a>
+        </li>
+      </ul>
+      <a routerLink="/about" class="about-icon" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="About">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 21L12 3l8 18"></path>
+          <path d="M7 14h10"></path>
+        </svg>
+      </a>
+    </div>
   </div>
 </nav>
