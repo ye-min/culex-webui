@@ -101,9 +101,9 @@
   }
 }
 
-/* ── Human — left, with left accent line ── */
+/* ── Human — right, with right accent line ── */
 .turn.q {
-  align-items: flex-start;
+  align-items: flex-end;
 }
 
 .turn.q .turn-indicator {
@@ -111,6 +111,7 @@
   align-items: center;
   gap: 6px;
   margin-bottom: 0.6rem;
+  flex-direction: row-reverse;
 }
 
 .turn.q .turn-icon {
@@ -132,13 +133,14 @@
   line-height: 1.7;
   color: var(--fg);
   max-width: 75%;
-  padding-left: 1.2rem;
-  border-left: 1.5px solid var(--border-2);
+  padding-right: 1.2rem;
+  border-right: 1.5px solid var(--border-2);
+  text-align: left;
 }
 
-/* ── AI — right, with right accent line ── */
+/* ── AI — left, with left accent line ── */
 .turn.a {
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .turn.a .turn-indicator {
@@ -146,7 +148,6 @@
   align-items: center;
   gap: 6px;
   margin-bottom: 0.6rem;
-  flex-direction: row-reverse;
 }
 
 .turn.a .turn-icon {
@@ -168,32 +169,32 @@
   line-height: 1.85;
   color: var(--fg-2);
   max-width: 75%;
-  padding-right: 1.2rem;
-  border-right: 1.5px solid var(--c-ai);
-  text-align: right;
+  padding-left: 1.2rem;
+  border-left: 1.5px solid var(--c-ai);
+  text-align: left;
 }
 
 /* ── Markdown inside bubbles ── */
-.turn-bubble p { margin: 0 0 0.75em; }
-.turn-bubble p:last-child { margin-bottom: 0; }
+:host ::ng-deep .turn-bubble p { margin: 0 0 0.75em; }
+:host ::ng-deep .turn-bubble p:last-child { margin-bottom: 0; }
 
-.turn-bubble h1,
-.turn-bubble h2,
-.turn-bubble h3 {
+:host ::ng-deep .turn-bubble h1,
+:host ::ng-deep .turn-bubble h2,
+:host ::ng-deep .turn-bubble h3 {
   font-family: var(--serif);
   font-weight: 400;
   color: var(--fg);
   margin: 1.2em 0 0.4em;
   text-align: left;
 }
-.turn-bubble h1 { font-size: 1.4rem; }
-.turn-bubble h2 { font-size: 1.2rem; }
-.turn-bubble h3 { font-size: 1.05rem; }
+:host ::ng-deep .turn-bubble h1 { font-size: 1.4rem; }
+:host ::ng-deep .turn-bubble h2 { font-size: 1.2rem; }
+:host ::ng-deep .turn-bubble h3 { font-size: 1.05rem; }
 
-.turn-bubble strong { color: var(--fg); font-weight: 600; }
-.turn-bubble em { font-style: italic; }
+:host ::ng-deep .turn-bubble strong { color: var(--fg); font-weight: 600; }
+:host ::ng-deep .turn-bubble em { font-style: italic; }
 
-.turn-bubble code {
+:host ::ng-deep .turn-bubble code {
   font-family: var(--mono);
   font-size: 0.85em;
   background: var(--border);
@@ -201,7 +202,7 @@
   border-radius: 3px;
 }
 
-.turn-bubble pre {
+:host ::ng-deep .turn-bubble pre {
   text-align: left;
   background: var(--border);
   border-radius: 4px;
@@ -210,7 +211,7 @@
   margin: 0.8em 0;
 }
 
-.turn-bubble pre code {
+:host ::ng-deep .turn-bubble pre code {
   background: none;
   padding: 0;
   font-size: 0.82rem;
@@ -218,16 +219,16 @@
   color: var(--fg-2);
 }
 
-.turn-bubble ul,
-.turn-bubble ol {
+:host ::ng-deep .turn-bubble ul,
+:host ::ng-deep .turn-bubble ol {
   text-align: left;
   padding-left: 1.4em;
   margin: 0.6em 0;
 }
 
-.turn-bubble li { margin: 0.2em 0; }
+:host ::ng-deep .turn-bubble li { margin: 0.2em 0; }
 
-.turn-bubble blockquote {
+:host ::ng-deep .turn-bubble blockquote {
   text-align: left;
   border-left: 2px solid var(--border-2);
   padding-left: 1em;

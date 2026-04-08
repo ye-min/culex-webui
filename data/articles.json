@@ -1,5 +1,11 @@
 [
   {
+    "date": "2026-04-07",
+    "title": "2026 年度大模型编程能力权威排行榜",
+    "excerpt": "根据 2026 年 4 月最新的行业数据和学术评测，大模型编程能力排行榜已发生重大洗牌。",
+    "file": "assets/content/articles/llm-coding-leaderboard-2026-Q2-report.md"
+  },
+  {
     "date": "2026-04-01",
     "title": "医疗服务系统 — 全流程交付物清单",
     "excerpt": "面向普通用户的医疗服务系统的**全生命周期交付物清单**。该系统由后台服务、Web 管理平台和微信小程序三端构成，核心功能包括病例上传、基于大语言模型的病例智能分析与在线咨询、药品商城以及医疗服务的订购与预约。",
@@ -10,17 +16,5 @@
     "title": "关于工具与思维的关系，我改变了看法",
     "excerpt": "以前觉得好工具应该透明，用着感觉不到它。现在觉得这个标准<em>本身就是问题</em>——工具应该有摩擦，摩擦才是思维发生的地方。",
     "file": "assets/content/articles/tools-and-thinking.md"
-  },
-  {
-    "date": "2026-02-27",
-    "title": "Angular Signal 的设计哲学与实践记录",
-    "excerpt": "Signal 不是新概念，但 Angular 的实现方式有它自己的立场。这篇是用了三个月之后的<em>真实使用感受</em>，不是文档翻译。",
-    "file": "assets/content/articles/angular-signal.md"
-  },
-  {
-    "date": "2026-01-31",
-    "title": "用 CSS Grid 实现非对称排版布局",
-    "excerpt": "对称是默认值，不对称需要理由。这篇记录了<em>几个有说服力的比例关系</em>，以及它们背后的视觉逻辑。",
-    "file": "assets/content/articles/css-grid-asymmetric.md"
   }
 ]

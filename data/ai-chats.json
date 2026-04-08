@@ -1,13 +1,13 @@
 [
   {
-    "id": "recursive-aesthetics",
-    "title": "递归美学与中文诗歌结构",
-    "date": "2026-03-07",
+    "id": "ai-job-crisis-social-physics-logic",
+    "title": "AI 替代工作与社会逻辑闭环讨论",
+    "date": "2026-04-06",
     "preview": {
-      "q": "《春江花月夜》里的意象是不是有某种递归结构？",
-      "a": "有意思——「江畔何人初见月」到「何处相思明月楼」，确实像是在同一个意象上不断折叠……"
+      "q": "一个越来越现实的问题, AI已经可以替代大多数人的工作, 很多人会因此失去工作吗? ",
+      "a": "根据当前的技术演进趋势和行业数据，答案是肯定的：**确实会有很多人因为 AI 的普及而失去工作。**"
     },
-    "file": "assets/content/ai-chats/recursive-aesthetics.json"
+    "file": "assets/content/ai-chats/ai-job-crisis-social-physics-logic.json"
   },
   {
     "id": "rag-semantic-retrieval",

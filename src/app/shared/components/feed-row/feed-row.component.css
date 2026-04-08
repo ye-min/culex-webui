@@ -147,6 +147,9 @@
   border-radius: 0;
 }
 
+:host ::ng-deep .ai-line p { margin: 0; }
+:host ::ng-deep .ai-line p:not(:last-child) { margin-bottom: 0.5em; }
+
 .ai-line.q {
   border-left-color: var(--border-2);
   color: var(--fg-2);

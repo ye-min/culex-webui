@@ -49,8 +49,8 @@
     <!-- ai: 一问一答预览 -->
     <div *ngSwitchCase="'ai'" class="ai-exchange">
       <ng-container *ngIf="item.aiPreview">
-        <div class="ai-line q">{{ item.aiPreview.q }}</div>
-        <div class="ai-line">{{ item.aiPreview.a }}</div>
+        <div class="ai-line q" [innerHTML]="renderMarkdown(item.aiPreview.q)"></div>
+        <div class="ai-line" [innerHTML]="renderMarkdown(item.aiPreview.a)"></div>
       </ng-container>
     </div>
 
