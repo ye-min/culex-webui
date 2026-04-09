@@ -14,6 +14,29 @@
                 <span class="dot yellow"></span>
                 <span class="dot green"></span>
               </div>
+              <span class="terminal-header-title">~/workspace/culex-webui</span>
+            </div>
+            <div class="terminal-body">
+              <div class="terminal-line">
+                <span class="prompt">~ %</span><span class="command">culex</span> --version
+              </div>
+              <div class="terminal-line">
+                Culex Evolution v{{ version }}
+              </div>
+              <div class="terminal-line">
+                Build: {{ buildTime }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="terminal-section">
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
               <span class="terminal-header-title">~/workspace/git</span>
             </div>
             <div class="terminal-body">
@@ -23,25 +46,6 @@
               <div class="terminal-line">
                 <span class="prompt">~ %</span><span class="command">git config</span> user.email
                 "builder.yemin@gmail.com"
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="terminal-section">
-          <div class="terminal-window">
-            <div class="terminal-header">
-              <div class="terminal-dots">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-              </div>
-              <span class="terminal-header-title">~/workspace/angular</span>
-            </div>
-            <div class="terminal-body">
-              <div class="terminal-line">
-                <span class="prompt">~ %</span><span class="command">ng new</span> culex <span
-                  class="command">--directory ./</span>
               </div>
             </div>
           </div>
@@ -85,12 +89,24 @@
                 <span class="dot yellow"></span>
                 <span class="dot green"></span>
               </div>
-              <span class="terminal-header-title">~/workspace/postgres</span>
+              <span class="terminal-header-title">~/workspace/database</span>
             </div>
             <div class="terminal-body">
               <div class="terminal-line">
                 <span class="prompt">~ %</span><span class="command">pgcli</span> -h localhost -p 5432 -U developer
                 postgres
+              </div>
+              <div class="terminal-line">
+                <span class="prompt">~ %</span><span class="command">redis-cli</span>
+              </div>
+              <div class="terminal-line">
+                <span class="prompt">127.0.0.1:6379></span><span class="command">AUTH</span> password
+              </div>
+              <div class="terminal-line">
+                <span class="prompt">127.0.0.1:6379></span><span class="command">SET</span> "culex:status" "active"
+              </div>
+              <div class="terminal-line">
+                <span class="prompt">127.0.0.1:6379></span><span class="command">EXPIRE</span> "culex:status" 3600
               </div>
             </div>
           </div>
@@ -104,20 +120,12 @@
                 <span class="dot yellow"></span>
                 <span class="dot green"></span>
               </div>
-              <span class="terminal-header-title">~/workspace/redis</span>
+              <span class="terminal-header-title">~/workspace/angular</span>
             </div>
             <div class="terminal-body">
               <div class="terminal-line">
-                <span class="prompt">~ %</span><span class="command">redis-cli</span>
-              </div>
-              <div class="terminal-line">
-                <span class="prompt">127.0.0.1:6379></span><span class="command">AUTH</span> password
-              </div>
-              <div class="terminal-line">
-                <span class="prompt">127.0.0.1:6379></span><span class="command">SET</span> "culex:status" "active"
-              </div>
-              <div class="terminal-line">
-                <span class="prompt">127.0.0.1:6379></span><span class="command">EXPIRE</span> "culex:status" 3600
+                <span class="prompt">~ %</span><span class="command">ng new</span> culex <span
+                  class="command">--directory ./</span>
               </div>
             </div>
           </div>
