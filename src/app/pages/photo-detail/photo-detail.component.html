@@ -1,4 +1,4 @@
-<ng-container *ngIf="album$ | async as album; else notFound">
+<ng-container *ngIf="album$ | async as album; else loadingOrError">
   <main class="detail-page">
     <!-- Hero header -->
     <header class="detail-header container">
@@ -76,8 +76,8 @@
   </div>
 </ng-container>
 
-<ng-template #notFound>
-  <div class="not-found container">
+<ng-template #loadingOrError>
+  <div *ngIf="(album$ | async) === null" class="not-found container">
     <span class="not-found-code">404</span>
     <p class="not-found-text">Photo set not found.</p>
   </div>

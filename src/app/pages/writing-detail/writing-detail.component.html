@@ -1,4 +1,4 @@
-<ng-container *ngIf="article$ | async as article; else notFound">
+<ng-container *ngIf="article$ | async as article; else loadingOrError">
   <main class="detail-page">
     <!-- Hero header -->
     <header class="detail-header container">
@@ -22,8 +22,8 @@
   </main>
 </ng-container>
 
-<ng-template #notFound>
-  <div class="not-found container">
+<ng-template #loadingOrError>
+  <div *ngIf="(article$ | async) === null" class="not-found container">
     <span class="not-found-code">404</span>
     <p class="not-found-text">Article not found.</p>
   </div>

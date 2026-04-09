@@ -1,4 +1,4 @@
-<ng-container *ngIf="chat$ | async as chat; else notFound">
+<ng-container *ngIf="chat$ | async as chat; else loadingOrError">
   <main class="detail-page">
     <!-- Hero header -->
     <header class="detail-header container">
@@ -44,8 +44,8 @@
   </main>
 </ng-container>
 
-<ng-template #notFound>
-  <div class="not-found container">
+<ng-template #loadingOrError>
+  <div *ngIf="(chat$ | async) === null" class="not-found container">
     <span class="not-found-code">404</span>
     <p class="not-found-text">Dialogue not found.</p>
   </div>
