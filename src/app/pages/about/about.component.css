@@ -114,12 +114,19 @@
 
 @media (max-width: 768px) {
   .terminal-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
   
+  .terminal-window {
+    max-width: 100%;
+  }
+
   .terminal-line {
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 0.02em;
   }
 
