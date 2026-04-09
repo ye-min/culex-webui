@@ -115,6 +115,20 @@
 @media (max-width: 768px) {
   .terminal-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .terminal-line {
+    font-size: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .terminal-body {
+    padding: 1rem;
+  }
+
+  .terminal-line.indent {
+    padding-left: 2.5rem;
   }
 }
 
