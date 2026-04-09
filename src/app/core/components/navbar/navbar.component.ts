@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   navLinks = [
     { label: 'Writing', path: '/writing' },
-    { label: 'Photos',  path: '/photos' },
+    { label: 'Photos',  path: '/photo' },
     { label: 'AI',      path: '/ai' }
   ];
 

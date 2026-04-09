@@ -72,8 +72,8 @@ body {
 }
 
 /* Apply entrance animation to all routed page components automatically */
-app-home, app-writing, app-photos, app-ai, app-about,
-app-article-detail, app-photo-detail, app-ai-detail, app-nav {
+app-home, app-writing, app-photo, app-ai, app-about,
+app-writing-detail, app-photo-detail, app-ai-detail, app-nav {
   display: block;
   animation: fadeSlideUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

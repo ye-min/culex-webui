@@ -1,8 +1,8 @@
-<main id="writing-page">
+<main id="photos-page">
   <div class="container">
     <header class="page-header">
-      <h1 class="page-title">Writing</h1>
-      <p class="page-desc">思考、记录与拆解</p>
+      <h1 class="page-title">Photos</h1>
+      <p class="page-desc">用镜头捕捉的片段</p>
     </header>
 
     <!-- Tag filter bar -->
@@ -20,14 +20,14 @@
       >clear</button>
     </div>
 
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="((feedItems$ | async)?.length || 0) === 0">
+      <span class="empty-text">No photos match the selected filters.</span>
+    </div>
+
     <app-feed-row
       *ngFor="let item of feedItems$ | async; trackBy: trackByLink"
       [item]="item">
     </app-feed-row>
-
-    <!-- Empty state -->
-    <p class="empty-state" *ngIf="(feedItems$ | async)?.length === 0">
-      No articles match the selected tags.
-    </p>
   </div>
 </main>

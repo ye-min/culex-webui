@@ -5,36 +5,39 @@ export interface FeedDisplayItem {
   title: string;
   link: string;
   excerpt?: string;                      // 文章简介（HTML）
+  tags?: string[];                       // 文章标签
   coverImages?: string[];                // 照片封面组（方图）
   photoCount?: number;                   // 相册总张数
   aiPreview?: { q: string; a: string };  // AI 对话预览
 }
 
-/** data/articles.json 中每条记录的结构 */
-export interface ArticleIndex {
+/** data/writing.json 中每条记录的结构 */
+export interface WritingIndex {
   date: string;
   title: string;
   excerpt?: string;
+  tags?: string[];  // e.g. ["AI", "编程"]
   file: string; // e.g. "assets/content/articles/my-article.md"
 }
 
-/** data/photos.json 中相册内的单张照片 */
+/** data/photo.json 中相册内的单张照片 */
 export interface PhotoItem {
   file: string;
   caption: string;
 }
 
-/** data/photos.json 中相册内的照片分组 */
+/** data/photo.json 中相册内的照片分组 */
 export interface PhotoGroup {
   type: 'column' | 'row';  // column: 两列流布局，row: 单列全宽
   photos: PhotoItem[];
 }
 
-/** data/photos.json 中每条相册记录的结构 */
+/** data/photo.json 中每条相册记录的结构 */
 export interface PhotoAlbum {
   id: string;
   title: string;
   date: string;
+  tags?: string[];
   cover: string | string[]; // 单张封面或多张封面
   groups: PhotoGroup[];
 }
@@ -44,6 +47,7 @@ export interface AiChatIndex {
   id: string;
   title: string;
   date: string;
+  tags?: string[];
   preview?: { q: string; a: string };
   file: string; // e.g. "assets/content/ai-chats/chat-001.json"
 }
@@ -59,5 +63,6 @@ export interface AiChat {
   id: string;
   title: string;
   date: string;
+  tags?: string[];
   messages: ChatMessage[];
 }

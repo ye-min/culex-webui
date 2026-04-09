@@ -9,6 +9,9 @@
         <time class="meta-date">{{ chat.date }}</time>
       </div>
       <h1 class="detail-title">{{ chat.title }}</h1>
+      <div *ngIf="chat.tags && chat.tags.length" class="detail-tags">
+        <span *ngFor="let tag of chat.tags" class="detail-tag" (click)="navigateToTag(tag)">{{ tag }}</span>
+      </div>
       <div class="header-rule"></div>
     </header>
 

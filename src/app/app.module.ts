@@ -9,10 +9,10 @@ import { SharedModule } from './shared/shared.module';
 
 import { HomeComponent } from './pages/home/home.component';
 import { WritingComponent } from './pages/writing/writing.component';
-import { PhotosComponent } from './pages/photos/photos.component';
+import { PhotoComponent } from './pages/photo/photo.component';
 import { AiComponent } from './pages/ai/ai.component';
 import { AboutComponent } from './pages/about/about.component';
-import { ArticleDetailComponent } from './pages/article-detail/article-detail.component';
+import { WritingDetailComponent } from './pages/writing-detail/writing-detail.component';
 import { PhotoDetailComponent } from './pages/photo-detail/photo-detail.component';
 import { AiDetailComponent } from './pages/ai-detail/ai-detail.component';
 import { NavComponent } from './pages/nav/nav.component';
@@ -22,10 +22,10 @@ import { NavComponent } from './pages/nav/nav.component';
     AppComponent,
     HomeComponent,
     WritingComponent,
-    PhotosComponent,
+    PhotoComponent,
     AiComponent,
     AboutComponent,
-    ArticleDetailComponent,
+    WritingDetailComponent,
     PhotoDetailComponent,
     AiDetailComponent,
     NavComponent

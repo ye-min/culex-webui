@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { FeedDataService } from '../../core/services/feed-data.service';
@@ -20,6 +20,7 @@ export class PhotoDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private feedData: FeedDataService
   ) {}
 
@@ -63,5 +64,9 @@ export class PhotoDetailComponent implements OnInit {
   @HostListener('keydown.escape')
   onEscape(): void {
     this.closeLightbox();
+  }
+
+  navigateToTag(tag: string): void {
+    this.router.navigate(['/photo'], { queryParams: { tags: tag } });
   }
 }

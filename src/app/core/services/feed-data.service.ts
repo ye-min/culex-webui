@@ -4,7 +4,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import {
   FeedDisplayItem,
-  ArticleIndex,
+  WritingIndex,
   PhotoAlbum,
   PhotoGroup,
   AiChatIndex,
@@ -15,12 +15,12 @@ import {
 export class FeedDataService {
   constructor(private http: HttpClient) {}
 
-  getArticles(): Observable<ArticleIndex[]> {
-    return this.http.get<ArticleIndex[]>('data/articles.json');
+  getArticles(): Observable<WritingIndex[]> {
+    return this.http.get<WritingIndex[]>('data/writing.json');
   }
 
   getPhotoAlbums(): Observable<PhotoAlbum[]> {
-    return this.http.get<PhotoAlbum[]>('data/photos.json');
+    return this.http.get<PhotoAlbum[]>('data/photo.json');
   }
 
   getAiChatList(): Observable<AiChatIndex[]> {
@@ -42,12 +42,14 @@ export class FeedDataService {
             title: a.title,
             link: `/writing/${this.slugFromFile(a.file)}`,
             excerpt: a.excerpt,
+            tags: a.tags,
           })),
           ...albums.map((a) => ({
             date: a.date,
             type: 'photo' as const,
             title: a.title,
-            link: `/photos/${a.id}`,
+            link: `/photo/${a.id}`,
+            tags: a.tags,
             coverImages: Array.isArray(a.cover) ? a.cover : [a.cover],
             photoCount: a.groups.reduce((sum: number, g: PhotoGroup) => sum + g.photos.length, 0),
           })),
@@ -56,6 +58,7 @@ export class FeedDataService {
             type: 'ai' as const,
             title: c.title,
             link: `/ai/${c.id}`,
+            tags: c.tags,
             aiPreview: c.preview,
           })),
         ];
@@ -73,6 +76,7 @@ export class FeedDataService {
           title: a.title,
           link: `/writing/${this.slugFromFile(a.file)}`,
           excerpt: a.excerpt,
+          tags: a.tags,
         }))
       )
     );
@@ -85,7 +89,8 @@ export class FeedDataService {
           date: a.date,
           type: 'photo' as const,
           title: a.title,
-          link: `/photos/${a.id}`,
+          link: `/photo/${a.id}`,
+          tags: a.tags,
           coverImages: Array.isArray(a.cover) ? a.cover : [a.cover],
             photoCount: a.groups.reduce((sum: number, g: PhotoGroup) => sum + g.photos.length, 0),
         }))
@@ -101,6 +106,7 @@ export class FeedDataService {
           type: 'ai' as const,
           title: c.title,
           link: `/ai/${c.id}`,
+          tags: c.tags,
           aiPreview: c.preview,
         }))
       )
@@ -108,7 +114,7 @@ export class FeedDataService {
   }
 
   /** 根据 slug 加载文章元数据 + Markdown 内容 */
-  getArticleBySlug(slug: string): Observable<{ meta: ArticleIndex; content: string }> {
+  getArticleBySlug(slug: string): Observable<{ meta: WritingIndex; content: string }> {
     return this.getArticles().pipe(
       switchMap((articles) => {
         const meta = articles.find((a) => this.slugFromFile(a.file) === slug);
@@ -143,7 +149,6 @@ export class FeedDataService {
     );
   }
 
-  /** 根据 id 加载完整对话内容 */
   getAiChatById(id: string): Observable<AiChat> {
     return this.getAiChatList().pipe(
       switchMap((list) => {
@@ -151,7 +156,9 @@ export class FeedDataService {
         if (!entry) {
           throw new Error(`AI chat not found: ${id}`);
         }
-        return this.http.get<AiChat>(entry.file);
+        return this.http.get<AiChat>(entry.file).pipe(
+          map(chat => ({ ...chat, tags: entry.tags }))
+        );
       })
     );
   }

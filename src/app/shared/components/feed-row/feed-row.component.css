@@ -8,10 +8,6 @@
   color: inherit;
 }
 
-.row:hover .row-title {
-  opacity: 0.4;
-}
-
 /* ── Left ── */
 .row-left {
   padding-right: 2rem;
@@ -38,12 +34,20 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  cursor: pointer;
+}
+
+/* Type area hover — subtle dim since it's not clickable */
+.row-type:hover .type-label,
+.row-type:hover .type-icon {
+  opacity: 0.55;
 }
 
 .type-icon {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  transition: opacity 0.15s;
 }
 
 .type-label {
@@ -51,6 +55,8 @@
   font-size: 10px;
   color: var(--fg-3);
   letter-spacing: 0.1em;
+  line-height: 1;
+  transition: opacity 0.15s;
 }
 
 .row-title {
@@ -61,7 +67,8 @@
   letter-spacing: 0.012em;
   color: var(--fg);
   margin-top: 0.8rem;
-  transition: opacity 0.15s;
+  transition: color 0.2s ease;
+  cursor: pointer;
 }
 
 /* ── Divider ── */
@@ -89,6 +96,31 @@
 :host ::ng-deep .row-excerpt em {
   font-style: normal;
   color: var(--fg-2);
+}
+
+/* ── Tag pills ── */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 0.5rem;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--fg-3);
+  border: 0.5px solid var(--border-2);
+  border-radius: 2px;
+  padding: 1px 6px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tag:hover {
+  color: var(--fg-2);
+  border-color: var(--fg-3);
 }
 
 /* ── Photo strip ── */
@@ -176,7 +208,7 @@
 }
 
 /* ══════════════════════════════════════
-   Type-based accent colors (微量点缀)
+   Type-based accent colors
    Writing: var(--c-write)
    Photo:   var(--c-photo)
    AI:      var(--c-ai)
@@ -191,12 +223,26 @@
   color: var(--c-write);
 }
 
-.row.writing:hover .row-title {
-  opacity: 1;
+/* Title hover — independent per type */
+.row.writing .row-title:hover {
   color: var(--c-write);
 }
 
+/* Tag active — writing accent */
+.row.writing .tag.active {
+  color: var(--c-write);
+  border-color: var(--c-write);
+  background-color: transparent;
+}
+
 /* ── Photo accent ── */
+/* Tag active — photo accent */
+.row.photo .tag.active {
+  color: var(--c-photo);
+  border-color: var(--c-photo);
+  background-color: transparent;
+}
+
 .row.photo .type-icon svg rect {
   stroke: var(--c-photo);
 }
@@ -213,16 +259,11 @@
   color: var(--c-photo);
 }
 
-.row.photo:hover .row-title {
-  opacity: 1;
+.row.photo .row-title:hover {
   color: var(--c-photo);
 }
 
-.row.photo:hover .photo-count {
-  color: var(--c-photo);
-}
-
-/* Photo Micro-interaction: subtle zoom on hover */
+/* Photo micro-interaction: zoom on content area hover */
 .photo-thumb img {
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -231,7 +272,18 @@
   transform: scale(1.03);
 }
 
+.row.photo:hover .photo-count {
+  color: var(--c-photo);
+}
+
 /* ── AI accent ── */
+/* Tag active — ai accent */
+.row.ai .tag.active {
+  color: var(--c-ai);
+  border-color: var(--c-ai);
+  background-color: transparent;
+}
+
 .row.ai .type-icon svg path {
   stroke: var(--c-ai);
 }
@@ -240,13 +292,12 @@
   color: var(--c-ai);
 }
 
-.row.ai:hover .row-title {
-  opacity: 1;
+.row.ai .row-title:hover {
   color: var(--c-ai);
 }
 
 .row.ai .ai-line.q {
-  border-left-color: rgba(78, 137, 175, 0.4); /* fallback/base */
+  border-left-color: rgba(78, 137, 175, 0.4);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -257,9 +308,4 @@
 
 .row.ai:hover .ai-line.q {
   border-left-color: var(--c-ai);
-}
-
-/* ── Shared hover transition ── */
-.row-title {
-  transition: color 0.2s ease, opacity 0.15s;
 }

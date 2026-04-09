@@ -4,6 +4,27 @@
       <h1 class="page-title">AI</h1>
       <p class="page-desc">与机器的对话与碰撞</p>
     </header>
+
+    <!-- Tag filter bar -->
+    <div class="filter-bar" *ngIf="(allTags$ | async)?.length">
+      <button
+        *ngFor="let tag of allTags$ | async"
+        class="filter-tag"
+        [class.active]="isSelected(tag)"
+        (click)="toggleTag(tag)"
+      >{{ tag }}</button>
+      <button
+        *ngIf="(selectedTags$ | async)?.size"
+        class="filter-clear"
+        (click)="clearTags()"
+      >clear</button>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="((feedItems$ | async)?.length || 0) === 0">
+      <span class="empty-text">No records match the selected filters.</span>
+    </div>
+
     <app-feed-row
       *ngFor="let item of feedItems$ | async; trackBy: trackByLink"
       [item]="item">

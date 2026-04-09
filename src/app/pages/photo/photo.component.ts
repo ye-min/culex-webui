@@ -6,11 +6,11 @@ import { FeedDisplayItem } from '../../shared/models/feed-item.model';
 import { FeedDataService } from '../../core/services/feed-data.service';
 
 @Component({
-  selector: 'app-ai-page',
-  templateUrl: './ai.component.html',
-  styleUrls: ['./ai.component.css']
+  selector: 'app-photo',
+  templateUrl: './photo.component.html',
+  styleUrls: ['./photo.component.css']
 })
-export class AiComponent implements OnInit {
+export class PhotoComponent implements OnInit {
   private allItems$: Observable<FeedDisplayItem[]>;
 
   selectedTags$ = new BehaviorSubject<Set<string>>(new Set());
@@ -18,7 +18,7 @@ export class AiComponent implements OnInit {
   feedItems$: Observable<FeedDisplayItem[]>;
 
   constructor(private feedData: FeedDataService, private route: ActivatedRoute, private router: Router) {
-    this.allItems$ = this.feedData.getAiFeedItems();
+    this.allItems$ = this.feedData.getPhotoFeedItems();
 
     this.allTags$ = this.allItems$.pipe(
       map(items => {
