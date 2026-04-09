@@ -1,22 +1,24 @@
 [
+    {
+    "id": "physical-information-ontology",
+    "title": "信息的物理本质与唯物主义",
+    "date": "2026-04-09",
+    "tags": ["physical", "information"],
+    "preview": {
+      "q": "小时候在海边捡了一些鹅卵石，视若珍宝，前两天买水仙花，卖家同时寄来了一些铺垫的石头，和我小时侯收藏的鹅卵石看上去没什么区别。",
+      "a": "这种“视若珍宝”与“随货附赠”之间的撞车，确实会让人在瞬间产生一种微妙的失落感。但从物理和情感维度看，卖家寄来的是**“工业快进版”**的童年回忆……"
+    },
+    "file": "assets/content/ai-chats/physical-information-ontology.json"
+  },
   {
     "id": "ai-job-crisis-social-physics-logic",
     "title": "AI 替代工作与社会逻辑闭环讨论",
     "date": "2026-04-06",
+    "tags": ["social-impact", "automation"],
     "preview": {
       "q": "一个越来越现实的问题, AI已经可以替代大多数人的工作, 很多人会因此失去工作吗? ",
       "a": "根据当前的技术演进趋势和行业数据，答案是肯定的：**确实会有很多人因为 AI 的普及而失去工作。**"
     },
     "file": "assets/content/ai-chats/ai-job-crisis-social-physics-logic.json"
-  },
-  {
-    "id": "rag-semantic-retrieval",
-    "title": "RAG 系统里语义检索的边界问题",
-    "date": "2026-02-09",
-    "preview": {
-      "q": "向量空间里的距离，真的等于语义距离吗？",
-      "a": "不完全等于。余弦相似度度量的是方向而非含义，两个意思相反的句子在某些嵌入空间里可能很近……"
-    },
-    "file": "assets/content/ai-chats/rag-semantic-retrieval.json"
   }
 ]
