@@ -153,14 +153,14 @@
 }
 
 .turn.q .turn-bubble {
-  font-family: var(--serif);
-  font-size: 1.2rem;
-  line-height: 1.7;
-  color: var(--fg);
-  max-width: 75%;
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--fg-2);
+  max-width: 80%;
   padding-right: 1.2rem;
-  border-right: 1.5px solid var(--border-2);
-  text-align: left;
+  border-right: 2px solid var(--border-2);
+  text-align: right;
 }
 
 /* ── AI — left, with left accent line ── */
@@ -189,13 +189,13 @@
 }
 
 .turn.a .turn-bubble {
-  font-family: var(--sans);
-  font-size: 1.05rem;
-  line-height: 1.85;
-  color: var(--fg-2);
-  max-width: 75%;
-  padding-left: 1.2rem;
-  border-left: 1.5px solid var(--c-ai);
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--fg);
+  max-width: 85%;
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--c-ai);
   text-align: left;
 }
 

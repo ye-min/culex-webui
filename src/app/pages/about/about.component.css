@@ -13,7 +13,7 @@
 
 /* ── Content ── */
 .about-content {
-  padding-top: 2.5rem;
+  padding-top: 0.75rem;
 }
 
 .about-intro {
@@ -92,7 +92,7 @@
 
 /* ── Terminal Section ── */
 .terminal-section {
-  margin-top: 0rem;
+  /* Margin is now handled by the .terminal-grid gap */
 }
 
 .terminal-title {
@@ -105,27 +105,61 @@
   margin-bottom: 1.2rem;
 }
 
+.terminal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .terminal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .terminal-window {
   background-color: #1a1b26;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   font-family: var(--mono), Menlo, Monaco, Consolas, "Courier New", monospace;
-  max-width: 640px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .terminal-header {
   background-color: #24283b;
-  padding: 0.75rem 1rem;
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.terminal-dots {
   display: flex;
   gap: 0.4rem;
-  align-items: center;
+  z-index: 2;
 }
 
 .terminal-header .dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
+}
+
+.terminal-header-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #a9b1d6;
+  opacity: 0.25;
+  letter-spacing: 0.05em;
+  pointer-events: none;
 }
 
 .terminal-header .dot.red { background-color: #f7768e; }
@@ -137,17 +171,19 @@
   overflow-x: auto;
 }
 
-.terminal-body pre {
-  margin: 0;
-  font-family: inherit;
-}
-
-.terminal-body code {
+.terminal-line {
   font-family: inherit;
   font-size: 11px;
   color: #a9b1d6;
   line-height: 1.8;
   letter-spacing: 0.04em;
+  display: block;
+  white-space: nowrap;
+}
+
+.terminal-line.indent {
+  padding-left: 3.7rem;
+  opacity: 0.85;
 }
 
 .terminal-body .prompt {
