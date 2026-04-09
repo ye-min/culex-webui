@@ -1,9 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { switchMap, map, catchError } from 'rxjs/operators';
+import { switchMap, map, catchError, startWith } from 'rxjs/operators';
 import { FeedDataService } from '../../core/services/feed-data.service';
 import { PhotoAlbum, PhotoItem } from '../../shared/models/feed-item.model';
+import { LoadingState } from '../../shared/models/loading-state.model';
 import type { PhotoGroup } from '../../shared/models/feed-item.model';
 
 @Component({
@@ -12,7 +13,7 @@ import type { PhotoGroup } from '../../shared/models/feed-item.model';
   styleUrls: ['./photo-detail.component.css']
 })
 export class PhotoDetailComponent implements OnInit {
-  album$: Observable<PhotoAlbum | null | undefined>;
+  state$: Observable<LoadingState<PhotoAlbum>>;
 
   lightboxPhoto: PhotoItem | null = null;
   lightboxIndex: number = 0;
@@ -23,10 +24,15 @@ export class PhotoDetailComponent implements OnInit {
     private router: Router,
     private feedData: FeedDataService
   ) {
-    this.album$ = this.route.paramMap.pipe(
+    this.state$ = this.route.paramMap.pipe(
       map(params => params.get('id')),
-      switchMap(id => id ? this.feedData.getPhotoAlbumById(id) : of(null)),
-      catchError(() => of(null))
+      switchMap(id => {
+        if (!id) return of({ loading: false, data: null });
+        return this.feedData.getPhotoAlbumById(id).pipe(
+          map(album => ({ loading: false, data: album })),
+          catchError(() => of({ loading: false, data: null }))
+        ).pipe(startWith({ loading: true }));
+      })
     );
   }
 

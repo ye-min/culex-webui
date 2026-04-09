@@ -1,5 +1,6 @@
-<ng-container *ngIf="chat$ | async as chat; else loadingOrError">
-  <main class="detail-page">
+<ng-container *ngIf="state$ | async as state">
+  <!-- Success -->
+  <main class="detail-page" *ngIf="state.data as chat">
     <!-- Hero header -->
     <header class="detail-header container">
       <div class="header-meta">
@@ -15,7 +16,7 @@
       <div class="header-rule"></div>
     </header>
 
-    <!-- Chat transcript -->
+    <!-- Dialogue -->
     <section class="transcript container">
       <div class="transcript-inner">
         <div class="turn"
@@ -23,18 +24,6 @@
              [ngClass]="msg.role === 'user' ? 'q' : 'a'"
              [style.animation-delay]="(i * 0.08) + 's'">
           <div class="turn-indicator">
-            <!-- Human icon -->
-            <svg *ngIf="msg.role === 'user'" class="turn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <circle cx="8" cy="5.5" r="3" stroke="currentColor" stroke-width="1.2"/>
-              <path d="M2.5 14.5C2.5 11.5 5 9.5 8 9.5C11 9.5 13.5 11.5 13.5 14.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-            </svg>
-            <!-- AI icon -->
-            <svg *ngIf="msg.role === 'assistant'" class="turn-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.2"/>
-              <circle cx="6" cy="7.5" r="1" fill="currentColor"/>
-              <circle cx="10" cy="7.5" r="1" fill="currentColor"/>
-              <path d="M5.5 10.5Q8 12.5 10.5 10.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/>
-            </svg>
             <span class="turn-label">{{ msg.role === 'user' ? 'Human' : 'AI' }}</span>
           </div>
           <div class="turn-bubble" [innerHTML]="renderMessage(msg.content)"></div>
@@ -42,11 +31,13 @@
       </div>
     </section>
   </main>
-</ng-container>
 
-<ng-template #loadingOrError>
-  <div *ngIf="(chat$ | async) === null" class="not-found container">
+  <!-- Error / 404 -->
+  <div *ngIf="!state.loading && state.data === null" class="not-found container">
     <span class="not-found-code">404</span>
     <p class="not-found-text">Dialogue not found.</p>
   </div>
-</ng-template>
+
+  <!-- Loading Placeholder -->
+  <div *ngIf="state.loading" class="loading-placeholder"></div>
+</ng-container>

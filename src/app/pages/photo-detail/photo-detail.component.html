@@ -1,5 +1,6 @@
-<ng-container *ngIf="album$ | async as album; else loadingOrError">
-  <main class="detail-page">
+<ng-container *ngIf="state$ | async as state">
+  <!-- Success -->
+  <main class="detail-page" *ngIf="state.data as album">
     <!-- Hero header -->
     <header class="detail-header container">
       <div class="header-meta">
@@ -53,7 +54,7 @@
     </section>
   </main>
 
-  <!-- Lightbox -->
+  <!-- Lightbox (Global Overlay) -->
   <div class="lightbox-overlay"
        *ngIf="lightboxPhoto"
        (click)="closeLightbox()">
@@ -74,11 +75,13 @@
       </div>
     </div>
   </div>
-</ng-container>
 
-<ng-template #loadingOrError>
-  <div *ngIf="(album$ | async) === null" class="not-found container">
+  <!-- Error / 404 -->
+  <div *ngIf="!state.loading && state.data === null" class="not-found container">
     <span class="not-found-code">404</span>
     <p class="not-found-text">Photo set not found.</p>
   </div>
-</ng-template>
+
+  <!-- Loading Placeholder -->
+  <div *ngIf="state.loading" class="loading-placeholder"></div>
+</ng-container>

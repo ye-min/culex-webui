@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SafeHtml } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
-import { switchMap, map, catchError } from 'rxjs/operators';
+import { switchMap, map, catchError, startWith } from 'rxjs/operators';
 import { FeedDataService } from '../../core/services/feed-data.service';
 import { MarkdownRenderService } from '../../core/services/markdown-render.service';
 import { AiChat } from '../../shared/models/feed-item.model';
+import { LoadingState } from '../../shared/models/loading-state.model';
 
 @Component({
   selector: 'app-ai-detail',
@@ -13,7 +14,7 @@ import { AiChat } from '../../shared/models/feed-item.model';
   styleUrls: ['./ai-detail.component.css']
 })
 export class AiDetailComponent implements OnInit {
-  chat$: Observable<AiChat | null | undefined>;
+  state$: Observable<LoadingState<AiChat>>;
 
   constructor(
     private route: ActivatedRoute,
@@ -21,10 +22,15 @@ export class AiDetailComponent implements OnInit {
     private feedData: FeedDataService,
     private renderService: MarkdownRenderService
   ) {
-    this.chat$ = this.route.paramMap.pipe(
+    this.state$ = this.route.paramMap.pipe(
       map(params => params.get('id')),
-      switchMap(id => id ? this.feedData.getAiChatById(id) : of(null)),
-      catchError(() => of(null))
+      switchMap(id => {
+        if (!id) return of({ loading: false, data: null });
+        return this.feedData.getAiChatById(id).pipe(
+          map(chat => ({ loading: false, data: chat })),
+          catchError(() => of({ loading: false, data: null }))
+        ).pipe(startWith({ loading: true }));
+      })
     );
   }
 

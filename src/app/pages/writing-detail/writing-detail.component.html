@@ -1,5 +1,6 @@
-<ng-container *ngIf="article$ | async as article; else loadingOrError">
-  <main class="detail-page">
+<ng-container *ngIf="state$ | async as state">
+  <!-- Success -->
+  <main class="detail-page" *ngIf="state.data as article">
     <!-- Hero header -->
     <header class="detail-header container">
       <div class="header-meta">
@@ -20,11 +21,13 @@
       <div class="body-content" [innerHTML]="article.html"></div>
     </article>
   </main>
-</ng-container>
 
-<ng-template #loadingOrError>
-  <div *ngIf="(article$ | async) === null" class="not-found container">
+  <!-- Error / 404 -->
+  <div *ngIf="!state.loading && state.data === null" class="not-found container">
     <span class="not-found-code">404</span>
     <p class="not-found-text">Article not found.</p>
   </div>
-</ng-template>
+
+  <!-- Loading (Optional: Blank or Spinner) -->
+  <div *ngIf="state.loading" class="loading-placeholder"></div>
+</ng-container>
