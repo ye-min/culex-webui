@@ -15,6 +15,7 @@
   --c-photo:  #AE543A;
   --c-ai:     #4E89AF;
   --c-nav:    #6B8F8A;
+  --c-tools:  #7866A0;
 
   --serif:    'Cormorant Garamond', Georgia, serif;
   --mono:     'JetBrains Mono', monospace;
@@ -38,6 +39,7 @@
     --c-photo:  #c56f57;
     --c-ai:     #67a2cb;
     --c-nav:    #88b5b0;
+    --c-tools:  #9B8FC6;
   }
 }
 
@@ -73,7 +75,8 @@ body {
 
 /* Apply entrance animation to all routed page components automatically */
 app-home, app-writing, app-photo, app-ai, app-about,
-app-writing-detail, app-photo-detail, app-ai-detail, app-nav {
+app-writing-detail, app-photo-detail, app-ai-detail, app-nav,
+app-tools, app-pdf-converter, app-pdf-merger, app-ip-info, app-timestamp, app-hash-calc {
   display: block;
   animation: fadeSlideUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

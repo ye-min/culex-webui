@@ -23,8 +23,10 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              { "glob": "**/*", "input": "data", "output": "data" }
+              { "glob": "**/*", "input": "data", "output": "data" },
+              { "glob": "pdf.worker.min.js", "input": "node_modules/pdfjs-dist/build/", "output": "/" }
             ],
+            "allowedCommonJsDependencies": ["pdfjs-dist", "pdf-lib", "pako"],
             "styles": [
               "src/styles.css"
             ],

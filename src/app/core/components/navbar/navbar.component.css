@@ -61,11 +61,29 @@ nav .container {
   gap: 3rem;
 }
 
+.icon-group {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.nav-icon,
+.tools-icon,
 .about-icon {
   display: flex;
   align-items: center;
   color: var(--fg-2);
   transition: color 0.15s;
+}
+
+.nav-icon:hover,
+.nav-icon.active {
+  color: var(--c-nav);
+}
+
+.tools-icon:hover,
+.tools-icon.active {
+  color: var(--c-tools);
 }
 
 .about-icon:hover,
@@ -80,5 +98,9 @@ nav .container {
   
   .nav-right {
     gap: 1.5rem;
+  }
+
+  .icon-group {
+    gap: 1rem;
   }
 }
