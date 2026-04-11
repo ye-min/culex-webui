@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { PDFDocument } from 'pdf-lib';
 
 interface PdfEntry {
   id: number;
@@ -51,6 +50,7 @@ export class PdfMergerComponent {
       const entry: PdfEntry = { id, file, pageCount: null };
       this.entries.push(entry);
       try {
+        const { PDFDocument } = await import('pdf-lib');
         const buf = await file.arrayBuffer();
         const pdf = await PDFDocument.load(buf, { ignoreEncryption: true });
         entry.pageCount = pdf.getPageCount();
@@ -112,6 +112,7 @@ export class PdfMergerComponent {
     this.isMerging = true;
     this.errorMsg = '';
     try {
+      const { PDFDocument } = await import('pdf-lib');
       const merged = await PDFDocument.create();
       for (const entry of this.entries) {
         const buf = await entry.file.arrayBuffer();

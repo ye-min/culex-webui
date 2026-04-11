@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import * as pdfjsLib from 'pdfjs-dist';
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
 
 interface TextItem {
   str: string;
@@ -55,6 +52,8 @@ export class PdfConverterComponent {
     this.markdownOutput = '';
 
     try {
+      const pdfjsLib = await import('pdfjs-dist');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       const lines: string[] = [];
