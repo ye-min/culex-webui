@@ -4,6 +4,12 @@
 Angular 个人网站，包含技术文章、日常照片、AI 对话三个模块。
 无后端服务，所有数据存于项目内的 JSON / Markdown 文件。
 
+## 运行环境
+所有命令（`ng serve`、`ng build`、`npm install` 等）均需在 conda 的 `angular16` 环境下执行：
+```bash
+conda activate angular16
+```
+
 ## 技术栈
 - Angular 16
 - TypeScript strict 模式
