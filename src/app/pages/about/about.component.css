@@ -1,5 +1,5 @@
 .page-header {
-  padding: 3rem 0 2rem;
+  padding: 1.5rem 0 1rem;
   border-bottom: 0.5px solid var(--border);
 }
 
@@ -13,7 +13,8 @@
 
 /* ── Content ── */
 .about-content {
-  padding-top: 0.75rem;
+  padding-top: 0rem;
+  padding-bottom: 1rem;
 }
 
 .about-intro {
@@ -21,7 +22,7 @@
 }
 
 .about-text {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 2;
   color: var(--fg-2);
   margin-bottom: 1.2rem;
@@ -50,7 +51,7 @@
 
 /* ── Links ── */
 .about-links {
-  margin-top: 3rem;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
@@ -91,9 +92,6 @@
 }
 
 /* ── Terminal Section ── */
-.terminal-section {
-  /* Margin is now handled by the .terminal-grid gap */
-}
 
 .terminal-title {
   font-family: var(--mono);
@@ -217,3 +215,32 @@
   color: #9ece6a;
   margin-right: 0.4rem;
 }
+
+/* ── Project list card ── */
+.terminal-section--full {
+  grid-column: 1 / -1;
+}
+
+.project-line {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.project-name {
+  font-family: inherit;
+  min-width: 90px;
+  color: #c0caf5;
+  letter-spacing: 0.04em;
+}
+
+.project-status {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.status-completed   { color: #9ece6a; }
+.status-active      { color: #7aa2f7; }
+.status-testing     { color: #e0af68; }
+.status-dev         { color: #ff9e64; }
+.status-maintenance { color: #bb9af7; }
