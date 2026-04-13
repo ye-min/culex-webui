@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-04-13",
+    "title": "完整清除本地Windows账号",
+    "excerpt": "Windows账号不仅包含用户数据, 还涉及系统设置, 权限和安全策略. 要彻底清除一个Windows账号, 需要执行以下步骤: ",
+    "file": "assets/content/articles/remove-windows-account.md",
+    "tags": ["windows", "account"]
+  },
+  {
     "date": "2026-04-09",
     "title": "Claude Code + 本地大模型完整使用指南",
     "excerpt": "Claude Code 本质上只是一个终端客户端程序，它把你的输入组装成 API 请求发出去。发给谁，完全取决于环境变量的配置，与 Anthropic 本身没有强制绑定。",
