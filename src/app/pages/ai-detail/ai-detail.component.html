@@ -8,6 +8,10 @@
         <span class="type-badge">Dialogue</span>
         <span class="meta-dot">·</span>
         <time class="meta-date">{{ chat.date }}</time>
+        <ng-container *ngIf="chat.model">
+          <span class="meta-dot">·</span>
+          <span class="model-badge">{{ chat.model }}<span *ngIf="chat.version" class="model-version"> {{ chat.version }}</span></span>
+        </ng-container>
       </div>
       <h1 class="detail-title">{{ chat.title }}</h1>
       <div *ngIf="chat.tags && chat.tags.length" class="detail-tags">

@@ -1,5 +1,18 @@
 [
-    {
+  {
+    "id": "power-vs-truth",
+    "title": "项羽与刘邦",
+    "date": "2026-04-22",
+    "tags": ["history"],
+    "model": "Claude",
+    "version": "Sonnet 4.5",
+    "preview": {
+      "q": "项羽有哪些屠城的记录，具体在现在的什么地方",
+      "a": "根据史料（如《史记·项羽本纪》）记载，项羽性格暴悍，其征战生涯中伴随着多次残酷的屠城记录"
+    },
+    "file": "assets/content/ai-chats/power-vs-truth.json"
+  },  
+  {
     "id": "physical-information-ontology",
     "title": "信息的物理本质与唯物主义",
     "date": "2026-04-09",

@@ -48,6 +48,8 @@ export interface AiChatIndex {
   title: string;
   date: string;
   tags?: string[];
+  model?: string;    // e.g. "Claude", "GPT", "Gemini"
+  version?: string;  // e.g. "Sonnet 4.5", "4o", "2.0 Flash"
   preview?: { q: string; a: string };
   file: string; // e.g. "assets/content/ai-chats/chat-001.json"
 }
@@ -64,5 +66,7 @@ export interface AiChat {
   title: string;
   date: string;
   tags?: string[];
+  model?: string;    // e.g. "Claude", "GPT", "Gemini"
+  version?: string;  // e.g. "Sonnet 4.5", "4o", "2.0 Flash"
   messages: ChatMessage[];
 }

@@ -49,6 +49,17 @@
   color: var(--fg-3);
 }
 
+.model-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--fg-3);
+}
+
+.model-version {
+  opacity: 0.7;
+}
+
 .detail-title {
   font-family: var(--serif);
   font-size: clamp(2rem, 5vw, 3.2rem);
