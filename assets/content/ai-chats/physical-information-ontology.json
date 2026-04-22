@@ -2,6 +2,8 @@
   "id": "chat-stones-and-entropy",
   "title": "从鹅卵石到物理信息论：实体与信息的深度探讨",
   "date": "2026-04-08",
+  "model": "Claude",
+  "version": "Sonnet 4.6",
   "messages": [
     {
       "role": "user",

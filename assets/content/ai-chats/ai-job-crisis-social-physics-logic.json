@@ -2,6 +2,8 @@
   "id": "chat-001",
   "title": "AI 替代工作与社会逻辑闭环讨论",
   "date": "2026-04-08",
+  "model": "Claude",
+  "version": "Sonnet 4.6",
   "messages": [
     {
       "role": "user",
