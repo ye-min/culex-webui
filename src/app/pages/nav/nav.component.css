@@ -19,6 +19,36 @@
   margin-top: 0.5rem;
 }
 
+.world-clocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  margin-top: 0.7rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-3);
+  letter-spacing: 0.08em;
+}
+
+.clock-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.clock-label {
+  color: var(--fg-3);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+.clock-time {
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
 .page-header::after {
   content: '';
   display: block;

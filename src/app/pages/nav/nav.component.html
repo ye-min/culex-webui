@@ -5,6 +5,15 @@
       <p class="page-desc">常用网站导航</p>
     </header>
 
+    <section>
+      <div class="world-clocks">
+        <span *ngFor="let clock of clocks" class="clock-item">
+          <span class="clock-label">{{ clock.label }}</span>
+          <span class="clock-time">{{ clock.time }}</span>
+        </span>
+      </div>
+    </section>
+
     <section *ngFor="let cat of categories" class="category-section">
       <h2 class="category-title">{{ cat.category }}</h2>
       <div class="link-grid">
