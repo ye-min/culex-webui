@@ -23,6 +23,7 @@ import { PdfMergerComponent } from './pages/pdf-merger/pdf-merger.component';
 import { IpInfoComponent } from './pages/ip-info/ip-info.component';
 import { TimestampComponent } from './pages/timestamp/timestamp.component';
 import { HashCalcComponent } from './pages/hash-calc/hash-calc.component';
+import { MdToPdfComponent } from './pages/md-to-pdf/md-to-pdf.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { HashCalcComponent } from './pages/hash-calc/hash-calc.component';
     PdfMergerComponent,
     IpInfoComponent,
     TimestampComponent,
-    HashCalcComponent
+    HashCalcComponent,
+    MdToPdfComponent
   ],
   imports: [
     BrowserModule,

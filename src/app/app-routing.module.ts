@@ -15,6 +15,7 @@ import { PdfMergerComponent } from './pages/pdf-merger/pdf-merger.component';
 import { IpInfoComponent } from './pages/ip-info/ip-info.component';
 import { TimestampComponent } from './pages/timestamp/timestamp.component';
 import { HashCalcComponent } from './pages/hash-calc/hash-calc.component';
+import { MdToPdfComponent } from './pages/md-to-pdf/md-to-pdf.component';
 
 const routes: Routes = [
   { path: '',        component: HomeComponent },
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'ip-info',       component: IpInfoComponent },
   { path: 'timestamp',     component: TimestampComponent },
   { path: 'hash-calc',     component: HashCalcComponent },
+  { path: 'md-to-pdf',    component: MdToPdfComponent },
   { path: '**',            redirectTo: '' }
 ];
 

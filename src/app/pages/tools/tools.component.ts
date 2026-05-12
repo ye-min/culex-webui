@@ -43,6 +43,12 @@ export class ToolsComponent {
       desc: '计算 MD5 / SHA / SHA-3 / RIPEMD 哈希值，纯本地运算',
       path: '/hash-calc',
       icon: 'hash'
+    },
+    {
+      title: 'Markdown → PDF',
+      desc: '粘贴或上传 Markdown，预览后通过浏览器打印导出为 PDF',
+      path: '/md-to-pdf',
+      icon: 'md-pdf'
     }
   ];
 }
