@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-06-12",
+    "title": "人工智能全维度分类总结",
+    "excerpt": "全面梳理人工智能的技术范式（机器学习、符号主义、神经符号）、机器学习分类方法、常见神经网络架构以及大语言模型主流路线，构建AI领域的全维度分类体系。",
+    "file": "assets/content/articles/ai-classification-summary.md",
+    "tags": ["AI", "machine-learning", "taxonomy"]
+  },
+  {
     "date": "2026-04-13",
     "title": "完整清除本地Windows账号",
     "excerpt": "Windows账号不仅包含用户数据, 还涉及系统设置, 权限和安全策略. 要彻底清除一个Windows账号, 需要执行以下步骤: ",
