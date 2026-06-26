@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-06-15",
+    "title": "CLAUDE宪法",
+    "excerpt": "Claude 的宪法详细描述了 Anthropic 对 Claude 价值观和行为的意图。 它在我们的训练过程中起着至关重要的作用，其内容直接塑造了 Claude 的行为和决策。 该宪法由一系列原则组成，指导 Claude 在各种情境下的行为，确保其输出符合我们的伦理标准和用户期望。",
+    "file": "assets/content/articles/claude-constitution.md",
+    "tags": ["AI", "claude"]
+  },
+  {
     "date": "2026-06-12",
     "title": "人工智能全维度分类总结",
     "excerpt": "全面梳理人工智能的技术范式（机器学习、符号主义、神经符号）、机器学习分类方法、常见神经网络架构以及大语言模型主流路线，构建AI领域的全维度分类体系。",
