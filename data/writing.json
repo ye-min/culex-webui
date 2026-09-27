@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-09-27",
+    "title": "从基础到端侧高效生成模型研究",
+    "excerpt": "面向已有一般本科数学与编程基础、希望研究 Efficient AI × Diffusion/Flow × 端侧部署的学习者",
+    "file": "assets/content/articles/from-basics-to-efficient-on-device-generative-model-research.md",
+    "tags": ["AI", "diffusion"]
+  },
+  {
     "date": "2026-06-15",
     "title": "CLAUDE宪法",
     "excerpt": "Claude 的宪法详细描述了 Anthropic 对 Claude 价值观和行为的意图。 它在我们的训练过程中起着至关重要的作用，其内容直接塑造了 Claude 的行为和决策。 该宪法由一系列原则组成，指导 Claude 在各种情境下的行为，确保其输出符合我们的伦理标准和用户期望。",
