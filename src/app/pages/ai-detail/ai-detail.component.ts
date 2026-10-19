@@ -9,6 +9,7 @@ import { AiChat } from '../../shared/models/feed-item.model';
 import { LoadingState } from '../../shared/models/loading-state.model';
 
 @Component({
+  standalone: false,
   selector: 'app-ai-detail',
   templateUrl: './ai-detail.component.html',
   styleUrls: ['./ai-detail.component.css']

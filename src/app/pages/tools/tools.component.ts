@@ -8,12 +8,19 @@ interface Tool {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-tools',
   templateUrl: './tools.component.html',
   styleUrls: ['./tools.component.css']
 })
 export class ToolsComponent {
   tools: Tool[] = [
+    {
+      title: '潜水艇大战',
+      desc: '每轮三枚深水炸弹，根据战报推理，找出海域中的十二艘潜艇',
+      path: '/submarine',
+      icon: 'submarine'
+    },
     {
       title: 'PDF → Markdown',
       desc: '将 PDF 文档转换为 Markdown 格式，可复制或下载',

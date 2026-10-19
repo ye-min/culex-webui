@@ -23,6 +23,7 @@ interface InfoRow {
 const WORKER_URL = 'https://ip-lookup.builder-yemin.workers.dev';
 
 @Component({
+  standalone: false,
   selector: 'app-ip-info',
   templateUrl: './ip-info.component.html',
   styleUrls: ['./ip-info.component.css']

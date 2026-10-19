@@ -1,0 +1,8 @@
+name: culex
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  # Angular 21 supports Node.js >=22.12 within the 22.x release line.
+  # Angular CLI is installed via npm by scripts/setup-conda.sh.
+  - nodejs>=22.12,<23

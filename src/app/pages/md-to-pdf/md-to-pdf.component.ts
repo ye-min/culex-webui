@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { marked } from 'marked';
 
 @Component({
+  standalone: false,
   selector: 'app-md-to-pdf',
   templateUrl: './md-to-pdf.component.html',
   styleUrls: ['./md-to-pdf.component.css']

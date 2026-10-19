@@ -7,6 +7,7 @@ interface TextItem {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-pdf-converter',
   templateUrl: './pdf-converter.component.html',
   styleUrls: ['./pdf-converter.component.css']

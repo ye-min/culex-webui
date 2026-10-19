@@ -1,28 +1,33 @@
 # 个人网站 CLAUDE.md
 
 ## 项目概述
-Angular 个人网站，包含技术文章、日常照片、AI 对话三个模块。
+Angular 个人网站，包含技术文章、日常照片、AI 对话、导航及 Tools 工具（含潜水艇大战）。
 无后端服务，所有数据存于项目内的 JSON / Markdown 文件。
 
 ## 运行环境
-所有命令（`ng serve`、`ng build`、`npm install` 等）均需在 conda 的 `angular16` 环境下执行：
+所有命令（`ng serve`、`ng build`、`npm install` 等）均需在 conda 的 `culex` 环境下执行：
 ```bash
-conda activate angular16
+conda activate culex
 ```
 
 ## 技术栈
-- Angular 16
+- Angular 21.2（保留 NgModule 架构）
+- Node.js 22.12+（22.x）、npm 10 / 11、TypeScript 5.9、RxJS 7.8
+- 显式使用 `provideZoneChangeDetection()` 与 Zone.js 0.15
 - TypeScript strict 模式
-- Angular Router（懒加载路由）
+- Angular Router（集中注册页面路由）
 
 ## 数据约定
-- **文章**：`assets/content/articles/<slug>.md`，元数据在 `data/articles.json`
-- **照片**：元数据（路径、标题、日期、标签）存于 `data/photos.json`
+- **文章**：`assets/content/articles/<slug>.md`，元数据在 `data/writing.json`
+- **照片**：元数据（路径、标题、日期、标签）存于 `data/photo.json`
 - **AI 对话**：`assets/content/ai-chats/<id>.json`，列表索引在 `data/ai-chats.json`
 - 新增内容时，**同时更新对应的索引 JSON 文件**
 
 ## 编码规范
-- 使用 NgModule（`app.module.ts`），新页面组件需在此声明
+- 使用 NgModule（`app.module.ts`），新页面组件需设置 `standalone: false` 并在此声明
+- 使用 `provideHttpClient()` 注册 HTTP 服务
+- 安装依赖使用 `npm ci`；验证使用 `npm run build` 和 `npm test -- --watch=false --browsers=ChromeHeadless`
+- 新建环境执行 `bash scripts/setup-conda.sh`；环境配置见 `environment.yml`
 - 服务用 `providedIn: 'root'`，数据加载返回 `Observable` 而非 Promise
 - 文件命名：`kebab-case`；类命名：`PascalCase`
 - 路由统一在 `app-routing.module.ts` 注册
@@ -46,8 +51,9 @@ conda activate angular16
 - 数据服务：`src/app/core/services/feed-data.service.ts`
 - 数据模型：`src/app/shared/models/feed-item.model.ts`
 - 页面组件目录：`src/app/pages/<name>/<name>.component.{ts,html,css}`
-- 本地数据文件：`data/articles.json`、`data/photos.json`、`data/ai-chats.json`、`data/bookmarks.json`
+- 本地数据文件：`data/writing.json`、`data/photo.json`、`data/ai-chats.json`、`data/bookmarks.json`
 
 ## 参考文档（按需引入）
 - @docs/content-schema.md   # 所有内容的数据结构定义
+- @docs/angular21-upgrade.md # Angular 21 环境、架构与验证说明
 - @README.md               # 项目背景与部署说明

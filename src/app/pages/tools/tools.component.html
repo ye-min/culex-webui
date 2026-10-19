@@ -12,6 +12,9 @@
         class="tool-card">
         <div class="tool-icon-wrap">
           <ng-container [ngSwitch]="tool.icon">
+            <svg *ngSwitchCase="'submarine'" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="10" width="16" height="9" rx="4.5"/><path d="M10 10V6h5V3h3M2 12v5m0-2h3"/><circle cx="11" cy="14.5" r="1.5"/><circle cx="17" cy="14.5" r="1.5"/>
+            </svg>
             <svg *ngSwitchCase="'pdf'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
               <polyline points="14 2 14 8 20 8"/>

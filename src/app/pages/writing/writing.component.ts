@@ -6,6 +6,7 @@ import { FeedDisplayItem } from '../../shared/models/feed-item.model';
 import { FeedDataService } from '../../core/services/feed-data.service';
 
 @Component({
+  standalone: false,
   selector: 'app-writing',
   templateUrl: './writing.component.html',
   styleUrls: ['./writing.component.css']

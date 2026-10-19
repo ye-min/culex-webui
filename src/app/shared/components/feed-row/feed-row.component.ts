@@ -6,6 +6,7 @@ import { FeedDisplayItem } from '../../models/feed-item.model';
 import { MarkdownRenderService } from '../../../core/services/markdown-render.service';
 
 @Component({
+  standalone: false,
   selector: 'app-feed-row',
   templateUrl: './feed-row.component.html',
   styleUrls: ['./feed-row.component.css']

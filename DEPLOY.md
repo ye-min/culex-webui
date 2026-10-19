@@ -1,5 +1,9 @@
 # 部署指南：GitHub Pages + 自定义域名
 
+本项目使用 Angular 21，构建环境为 Node.js 22.12+（22.x）与 npm 10 / 11。
+本地运行前执行 `conda activate culex` 和 `npm ci`。
+详细迁移约定见 [Angular 21 升级说明](docs/angular21-upgrade.md)。
+
 ## 概览
 
 ```
@@ -63,11 +67,11 @@ jobs:
       - name: Setup Node.js 🔧
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
 
       - name: Install and Build 🔧
         run: |
-          npm install
+          npm ci
           npm run build -- --configuration production --base-href /
           cp dist/culex-webui/index.html dist/culex-webui/404.html
 

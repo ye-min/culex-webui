@@ -2,7 +2,7 @@
 
 ## 技术文章
 
-`data/articles.json` — 索引文件：
+`data/writing.json` — 索引文件：
 ```json
 [
   {
@@ -19,7 +19,7 @@ Markdown 文件无需 frontmatter，直接正文内容，渲染到页面即可�
 
 ## 照片
 
-`data/photos.json` — 索引文件：
+`data/photo.json` — 索引文件：
 ```json
 [
   {

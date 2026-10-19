@@ -14,6 +14,7 @@ interface ArticleViewModel {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-writing-detail',
   templateUrl: './writing-detail.component.html',
   styleUrls: ['./writing-detail.component.css']

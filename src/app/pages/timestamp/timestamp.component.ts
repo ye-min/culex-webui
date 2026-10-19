@@ -8,6 +8,7 @@ interface ConvertResult {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-timestamp',
   templateUrl: './timestamp.component.html',
   styleUrls: ['./timestamp.component.css']

@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
+import { SubmarineComponent } from './pages/submarine/submarine.component';
+import { NgModule, provideZoneChangeDetection } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -43,17 +44,17 @@ import { MdToPdfComponent } from './pages/md-to-pdf/md-to-pdf.component';
     IpInfoComponent,
     TimestampComponent,
     HashCalcComponent,
-    MdToPdfComponent
+    MdToPdfComponent,
+    SubmarineComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
     FormsModule,
     AppRoutingModule,
     CoreModule,
     SharedModule
   ],
-  providers: [],
+  providers: [provideZoneChangeDetection(), provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -26,6 +26,7 @@ const ALGOS: { name: string; bits: number; fn: (data: Uint8Array) => Uint8Array 
 ];
 
 @Component({
+  standalone: false,
   selector: 'app-hash-calc',
   templateUrl: './hash-calc.component.html',
   styleUrls: ['./hash-calc.component.css']

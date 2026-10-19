@@ -4,6 +4,7 @@ import { FeedDisplayItem } from '../../shared/models/feed-item.model';
 import { FeedDataService } from '../../core/services/feed-data.service';
 
 @Component({
+  standalone: false,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']

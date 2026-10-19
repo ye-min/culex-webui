@@ -8,6 +8,7 @@ import { LoadingState } from '../../shared/models/loading-state.model';
 import type { PhotoGroup } from '../../shared/models/feed-item.model';
 
 @Component({
+  standalone: false,
   selector: 'app-photo-detail',
   templateUrl: './photo-detail.component.html',
   styleUrls: ['./photo-detail.component.css']

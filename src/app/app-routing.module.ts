@@ -1,3 +1,4 @@
+import { SubmarineComponent } from './pages/submarine/submarine.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'timestamp',     component: TimestampComponent },
   { path: 'hash-calc',     component: HashCalcComponent },
   { path: 'md-to-pdf',    component: MdToPdfComponent },
+  { path: 'submarine', component: SubmarineComponent, title: '潜水艇大战' },
   { path: '**',            redirectTo: '' }
 ];
 

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>潜水艇大战</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#dfe9ec; --surface:#f5f9fa; --ink:#0f2530; --muted:#557079; --line:#b4c8cf;
+  --water:#c9dde3; --water-hi:#b3d0d8; --fired:#93afb9; --sel:#e39b25; --hit:#cc3b30;
+  --miss:#7c949d; --ship:#1d4b5c; --accent:#0e6378; --accent-ink:#ffffff;
+  --mark-o:#1c7d55; --mark-x:#8a3b36;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#071419; --surface:#0d2028; --ink:#d6e7ec; --muted:#86a2ac; --line:#21404b;
+    --water:#0f2d38; --water-hi:#17404d; --fired:#2b4c58; --sel:#f1b04a; --hit:#ee5a4d;
+    --miss:#466270; --ship:#7cc3d8; --accent:#3aa7c6; --accent-ink:#04161c;
+    --mark-o:#4cc08c; --mark-x:#e08a82;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#071419; --surface:#0d2028; --ink:#d6e7ec; --muted:#86a2ac; --line:#21404b;
+  --water:#0f2d38; --water-hi:#17404d; --fired:#2b4c58; --sel:#f1b04a; --hit:#ee5a4d;
+  --miss:#466270; --ship:#7cc3d8; --accent:#3aa7c6; --accent-ink:#04161c;
+  --mark-o:#4cc08c; --mark-x:#e08a82;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%; overflow:hidden}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+  font-size:14px; line-height:1.5;
+}
+.wrap{height:100%; max-width:1280px; margin:0 auto; padding:12px 18px 14px; display:flex; flex-direction:column; gap:10px}
+header{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; flex:none}
+h1{
+  font-family:"ZCOOL QingKe HuangYou","PingFang SC","Microsoft YaHei",sans-serif;
+  font-weight:400; font-size:38px; line-height:1; margin:0; letter-spacing:.04em; color:var(--accent);
+}
+.sub{color:var(--muted); margin:0}
+
+.layout{flex:1; min-height:0; display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:16px}
+.left{display:flex; flex-direction:column; min-height:0; gap:12px}
+.right{display:flex; flex-direction:column; min-height:0; gap:12px}
+
+/* Board: always square, fits the space left above the controls */
+.board-area{flex:1; min-height:180px; container-type:size; position:relative; display:flex; align-items:center; justify-content:center}
+.board{
+  position:relative;
+  --side:min(100cqw,100cqh);
+  width:var(--side); height:var(--side);
+  display:grid; grid-template-columns:.55fr repeat(10,1fr); grid-template-rows:.55fr repeat(10,1fr); gap:3px;
+  user-select:none; -webkit-user-select:none; touch-action:manipulation;
+}
+.lbl{display:flex; align-items:center; justify-content:center; font-size:calc(var(--side)/40); color:var(--muted); font-variant-numeric:tabular-nums}
+.cell{
+  position:relative; width:100%; height:100%; border:0; padding:0; margin:0;
+  background:var(--water); border-radius:4px; cursor:pointer; font:inherit; color:var(--ink);
+  transition:background-color .15s, transform .1s;
+}
+.cell:hover{background:var(--water-hi)}
+.cell:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+.cell.sel{background:var(--sel); transform:scale(.88)}
+.cell.fired{background:var(--fired); cursor:default}
+.cell.fired.miss{background:var(--miss)}
+.cell.fired.hit{background:var(--hit)}
+.cell.fired.hit.sunk{background:repeating-linear-gradient(135deg,var(--hit) 0 5px,color-mix(in srgb,var(--hit) 65%,#000) 5px 10px)}
+.cell.ship{background:transparent; box-shadow:inset 0 0 0 2px var(--ship)}
+.cell .rn{position:absolute; left:3px; top:1px; font-size:calc(var(--side)/52); line-height:1.2; opacity:.85; pointer-events:none; font-variant-numeric:tabular-nums}
+.cell.hit .rn{color:#fff}
+.cell::after{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:calc(var(--side)/26); pointer-events:none}
+.cell[data-mark="x"]::after{content:"✕"; color:var(--mark-x)}
+.cell[data-mark="o"]::after{content:"●"; color:var(--mark-o)}
+.cell.hit[data-mark]::after{color:#fff}
+
+.banner{
+  display:none; position:absolute; left:50%; bottom:10px; transform:translateX(-50%);
+  width:min(92%,460px); padding:12px 16px; border-radius:8px;
+  background:var(--accent); color:var(--accent-ink); box-shadow:0 6px 24px rgba(0,0,0,.25); z-index:2;
+}
+.banner.show{display:block; animation:pop .35s ease-out}
+.banner strong{font-size:17px; display:block; padding-right:28px}
+.banner .close{
+  position:absolute; top:6px; right:6px; width:30px; height:30px; border:0; border-radius:50%;
+  background:transparent; color:inherit; font:inherit; font-size:18px; line-height:1; cursor:pointer;
+}
+.banner .close:hover{background:rgba(255,255,255,.18)}
+.banner .close:focus-visible{outline:2px solid currentColor; outline-offset:1px}
+@keyframes pop{from{opacity:0; transform:translateX(-50%) scale(.96)}to{opacity:1; transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){ .banner.show{animation:none} .cell{transition:none} }
+
+/* Panels */
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px 14px}
+.panel h2{font-size:14px; margin:0 0 8px; font-weight:600; display:flex; justify-content:space-between; align-items:baseline}
+.panel h2 span{font-weight:400; color:var(--muted); font-size:12px}
+.bottom{flex:none; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.25fr); gap:12px}
+.status{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px}
+.status .round{font-family:"ZCOOL QingKe HuangYou",sans-serif; font-size:26px; line-height:1}
+.status .picked{color:var(--muted); font-variant-numeric:tabular-nums}
+.picked b{color:var(--ink)}
+.row{display:flex; gap:6px; flex-wrap:wrap}
+button.btn{font:inherit; border-radius:7px; padding:6px 11px; cursor:pointer; border:1px solid var(--line); background:transparent; color:var(--ink)}
+button.btn:hover{border-color:var(--accent)}
+button.btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+button.btn.primary{background:var(--accent); color:var(--accent-ink); border-color:var(--accent); flex:1; font-weight:600}
+button.btn:disabled{opacity:.45; cursor:not-allowed}
+.seg{display:flex; border:1px solid var(--line); border-radius:7px; overflow:hidden; margin:8px 0 6px}
+.seg button{flex:1; font:inherit; padding:5px 6px; border:0; background:transparent; color:var(--muted); cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--surface)}
+label.chk{display:flex; gap:6px; align-items:center; font-size:13px; margin:4px 0 8px; cursor:pointer}
+.hint{font-size:12px; color:var(--muted); margin:6px 0 0}
+
+table{width:100%; border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-nums}
+th,td{padding:4px 3px; text-align:center; border-bottom:1px solid var(--line)}
+th{font-weight:500; color:var(--muted); font-size:12px}
+td:first-child,th:first-child{text-align:left}
+tr:last-child td{border-bottom:0}
+td.now{color:var(--hit); font-weight:700}
+.ico{display:inline-flex; width:58px; height:28px; align-items:center; justify-content:center; margin-right:6px; flex:none}
+.ico svg{max-width:100%; max-height:100%; display:block}
+/* Anchor ship artwork to grid lines without occupying or resizing board tracks. */
+.subpic{position:absolute; inset:0; pointer-events:none; z-index:1; padding:3%; display:flex; align-items:center; justify-content:center; animation:surface .4s ease-out}
+.subpic svg{width:100%; height:100%; display:block; filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
+.subpic.ghost{opacity:.6}
+@keyframes surface{from{opacity:0; transform:translateY(6px) scale(.92)}to{opacity:1; transform:none}}
+@media (prefers-reduced-motion:reduce){ .subpic{animation:none} }
+.tname{display:flex; align-items:center; white-space:nowrap}
+
+.rules{flex:none; padding-top:9px; padding-bottom:9px}
+.rules details ul{max-height:40vh; overflow:auto}
+.history{flex:1; min-height:0; display:flex; flex-direction:column}
+.log{flex:1; min-height:0; overflow:auto; list-style:none; margin:0; padding:0 4px 0 0; font-size:13px}
+.log li{padding:7px 0; border-bottom:1px dashed var(--line)}
+.log li:last-child{border-bottom:0}
+.log .head{display:flex; justify-content:space-between; gap:8px}
+.log .rnd{font-weight:600}
+.log .coords{font-variant-numeric:tabular-nums; color:var(--muted)}
+.log .res{display:block}
+.log .sunkmsg{color:var(--hit); font-weight:600}
+.empty{color:var(--muted)}
+details{font-size:13px; flex:none}
+details summary{cursor:pointer; color:var(--accent)}
+details ul{padding-left:18px; margin:6px 0 0; color:var(--muted)}
+
+/* Narrow screens can't fit everything in one viewport: fall back to scrolling */
+@media (max-width:760px){
+  html,body{overflow:auto; height:auto}
+  .wrap{height:auto}
+  .layout{grid-template-columns:1fr}
+  .board-area{flex:none; height:calc(100vw - 36px)}
+  .bottom{grid-template-columns:1fr}
+  .history{max-height:60vh}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>潜水艇大战</h1>
+    <p class="sub">每轮投 3 枚深水炸弹，靠战报推理出 12 艘潜艇的位置。</p>
+  </header>
+
+  <div class="layout">
+    <div class="left">
+      <div class="board-area">
+        <div class="board" id="board" aria-label="10×10 海域"></div>
+        <div class="banner" id="banner"></div>
+      </div>
+
+      <div class="bottom">
+        <section class="panel">
+          <div class="status">
+            <span class="round" id="roundLbl">第 1 轮</span>
+            <span class="picked">已选 <b id="pickedLbl">0</b> / <span id="needLbl">3</span></span>
+          </div>
+          <div class="row">
+            <button class="btn primary" id="fireBtn" disabled>投弹</button>
+            <button class="btn" id="clearSelBtn">清除选择</button>
+          </div>
+          <div class="seg" role="group" aria-label="点击模式">
+            <button id="modeFire" aria-pressed="true">选投弹点</button>
+            <button id="modeMark" aria-pressed="false">做标记 ✕ / ●</button>
+          </div>
+          <label class="chk"><input type="checkbox" id="revealChk"> 简单模式：显示每个点是否命中</label>
+          <div class="row">
+            <button class="btn" id="newBtn">新游戏</button>
+            <button class="btn" id="clearMarkBtn">清空标记</button>
+            <button class="btn" id="giveUpBtn">揭晓答案</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>当轮战报 <span id="curRoundLbl">尚未投弹</span></h2>
+          <table>
+            <thead><tr><th>潜艇</th><th>本轮命中</th><th>累计命中</th><th>击沉</th></tr></thead>
+            <tbody id="statBody"></tbody>
+          </table>
+          <p class="hint" id="totals"></p>
+        </section>
+      </div>
+    </div>
+
+    <div class="right">
+      <section class="panel rules">
+        <details>
+          <summary>规则</summary>
+          <ul>
+            <li>海域藏有：1×1 潜艇 5 艘、1×2 潜艇 3 艘、1×3 潜艇 2 艘（均为横向）、2×2 潜艇 1 艘、十字潜艇（5 格）1 艘。</li>
+            <li>潜艇之间互不接触，斜角也不相邻。</li>
+            <li>每轮选 3 个没投过的格子投弹，战报只告诉你各类潜艇被命中几次，不告诉你是哪一格。</li>
+            <li>标记模式下点击格子循环切换 ✕ / ● / 清空，电脑上右键也能直接标记。</li>
+            <li>一艘潜艇所有格子都被命中即击沉，全部击沉游戏结束。</li>
+          </ul>
+        </details>
+      </section>
+      <section class="panel history">
+        <h2>历史战报 <span id="histCount"></span></h2>
+        <ul class="log" id="log"></ul>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const N = 10;
+  const COLS = "ABCDEFGHIJ";
+  const TYPES = [
+    {id:"plus", name:"十字潜艇", count:1, shapes:[[[0,1],[1,0],[1,1],[1,2],[2,1]]]},
+    {id:"sq",   name:"2×2 潜艇", count:1, shapes:[[[0,0],[0,1],[1,0],[1,1]]]},
+    {id:"l3",   name:"1×3 潜艇", count:2, shapes:[[[0,0],[0,1],[0,2]]]},
+    {id:"l2",   name:"1×2 潜艇", count:3, shapes:[[[0,0],[0,1]]]},
+    {id:"l1",   name:"1×1 潜艇", count:5, shapes:[[[0,0]]]}
+  ];
+  const DISPLAY = ["l1","l2","l3","sq","plus"];
+
+  /* ---------- Cute submarine pictograms (SVG) ---------- */
+  const COLORS = {l1:"#f7c948", l2:"#ff8a6b", l3:"#55c9a6", sq:"#7f9cf5", plus:"#c38df5"};
+  const INK = "#1d3340";
+  const ST  = `stroke="${INK}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"`;
+  const ST3 = `stroke="${INK}" stroke-width="3" stroke-linecap="round"`;
+  const GLASS = "#e9f8ff", BLUSH = "#ff7aa2";
+
+  function hsub(L, col){
+    const W = 100*L, tx = 14 + (W-24)*0.3;
+    let s = `<svg viewBox="0 0 ${W} 100" xmlns="http://www.w3.org/2000/svg">`;
+    s += `<path d="M${tx+16} 22 V9 H${tx+29}" fill="none" ${ST}/>`;
+    s += `<rect x="${tx}" y="22" width="24" height="24" rx="7" fill="${col}" ${ST}/>`;
+    s += `<ellipse cx="10" cy="61" rx="5" ry="13" fill="${col}" ${ST}/>`;
+    s += `<rect x="14" y="38" width="${W-24}" height="46" rx="23" fill="${col}" ${ST}/>`;
+    if(L > 1){
+      const a = 36, b = W-64;
+      for(let i=0; i<L; i++){ const x = a + (b-a)*i/(L-1); s += `<circle cx="${x}" cy="60" r="8" fill="${GLASS}" ${ST}/>`; }
+    }
+    s += `<ellipse cx="${W-42}" cy="69" rx="6" ry="3.5" fill="${BLUSH}" opacity=".6"/>`;
+    s += `<circle cx="${W-28}" cy="55" r="4.5" fill="${INK}"/><circle cx="${W-26.5}" cy="53.5" r="1.4" fill="#fff"/>`;
+    s += `<path d="M${W-35} 66 q6 6 12 0" fill="none" ${ST3}/>`;
+    s += `<circle cx="${W-16}" cy="26" r="4" fill="none" ${ST3} opacity=".7"/><circle cx="${W-8}" cy="13" r="3" fill="none" ${ST3} opacity=".5"/>`;
+    return s + "</svg>";
+  }
+
+  function sqsub(col){
+    let s = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">`;
+    s += `<path d="M108 42 V22 H130" fill="none" ${ST}/>`;
+    s += `<rect x="72" y="42" width="50" height="40" rx="13" fill="${col}" ${ST}/>`;
+    s += `<ellipse cx="18" cy="120" rx="9" ry="24" fill="${col}" ${ST}/>`;
+    s += `<ellipse cx="104" cy="122" rx="80" ry="58" fill="${col}" ${ST}/>`;
+    s += `<circle cx="82" cy="112" r="17" fill="${GLASS}" ${ST}/><circle cx="132" cy="112" r="17" fill="${GLASS}" ${ST}/>`;
+    s += `<circle cx="86" cy="114" r="7" fill="${INK}"/><circle cx="136" cy="114" r="7" fill="${INK}"/>`;
+    s += `<circle cx="88.5" cy="111" r="2.2" fill="#fff"/><circle cx="138.5" cy="111" r="2.2" fill="#fff"/>`;
+    s += `<ellipse cx="60" cy="142" rx="10" ry="6" fill="${BLUSH}" opacity=".6"/><ellipse cx="156" cy="142" rx="10" ry="6" fill="${BLUSH}" opacity=".6"/>`;
+    s += `<path d="M94 144 q13 12 26 0" fill="none" ${ST}/>`;
+    s += `<circle cx="170" cy="52" r="7" fill="none" ${ST3} opacity=".7"/><circle cx="186" cy="30" r="5" fill="none" ${ST3} opacity=".5"/>`;
+    return s + "</svg>";
+  }
+
+  function plussub(col){
+    let s = `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">`;
+    s += `<path d="M162 42 V20 H186" fill="none" ${ST}/>`;
+    s += `<rect x="122" y="42" width="56" height="72" rx="18" fill="${col}" ${ST}/>`;
+    s += `<circle cx="150" cy="72" r="9" fill="${GLASS}" ${ST3}/>`;
+    s += `<rect x="120" y="186" width="60" height="72" rx="20" fill="${col}" ${ST}/>`;
+    s += `<path d="M132 238 H168" ${ST}/>`;
+    s += `<ellipse cx="36" cy="150" rx="10" ry="30" fill="${col}" ${ST}/>`;
+    s += `<rect x="44" y="124" width="72" height="52" rx="20" fill="${col}" ${ST}/>`;
+    s += `<rect x="184" y="124" width="80" height="52" rx="26" fill="${col}" ${ST}/>`;
+    s += `<circle cx="244" cy="150" r="10" fill="#fff6bf" ${ST3}/>`;
+    s += `<circle cx="150" cy="150" r="62" fill="${col}" ${ST}/>`;
+    s += `<circle cx="128" cy="140" r="8" fill="${INK}"/><circle cx="172" cy="140" r="8" fill="${INK}"/>`;
+    s += `<circle cx="131" cy="137" r="2.6" fill="#fff"/><circle cx="175" cy="137" r="2.6" fill="#fff"/>`;
+    s += `<ellipse cx="112" cy="164" rx="10" ry="6" fill="${BLUSH}" opacity=".6"/><ellipse cx="188" cy="164" rx="10" ry="6" fill="${BLUSH}" opacity=".6"/>`;
+    s += `<path d="M136 166 q14 13 28 0" fill="none" ${ST}/>`;
+    s += `<circle cx="236" cy="74" r="8" fill="none" ${ST3} opacity=".7"/><circle cx="258" cy="46" r="5" fill="none" ${ST3} opacity=".5"/>`;
+    return s + "</svg>";
+  }
+
+  const SVG = {
+    l1: hsub(1, COLORS.l1), l2: hsub(2, COLORS.l2), l3: hsub(3, COLORS.l3),
+    sq: sqsub(COLORS.sq), plus: plussub(COLORS.plus)
+  };
+  const TYPE = Object.fromEntries(TYPES.map(t=>[t.id,t]));
+
+  let occ, ships, fired, selected, marks, round, log, lastRound, over, mode, reveal;
+
+  const $ = id => document.getElementById(id);
+  const boardEl = $("board");
+  const cells = [];
+  const rand = n => Math.floor(Math.random()*n);
+  const keyName = k => COLS[k % N] + (Math.floor(k / N) + 1);
+
+  function freeAround(o, r, c){
+    for(let dr=-1; dr<=1; dr++) for(let dc=-1; dc<=1; dc++){
+      const rr=r+dr, cc=c+dc;
+      if(rr>=0 && rr<N && cc>=0 && cc<N && o[rr][cc] !== -1) return false;
+    }
+    return true;
+  }
+
+  function placeFleet(){
+    for(let attempt=0; attempt<2000; attempt++){
+      const o = Array.from({length:N}, ()=>Array(N).fill(-1));
+      const list = [];
+      let ok = true;
+      for(const t of TYPES){
+        for(let k=0; k<t.count && ok; k++){
+          let placed = false;
+          for(let tr=0; tr<400 && !placed; tr++){
+            const sh = t.shapes[rand(t.shapes.length)];
+            const h = Math.max(...sh.map(p=>p[0]))+1, w = Math.max(...sh.map(p=>p[1]))+1;
+            const r0 = rand(N-h+1), c0 = rand(N-w+1);
+            const cs = sh.map(([r,c])=>[r0+r, c0+c]);
+            if(cs.every(([r,c])=>freeAround(o,r,c))){
+              const idx = list.length;
+              list.push({type:t.id, cells:cs.map(([r,c])=>r*N+c), hits:new Set(), r0, c0, h, w});
+              cs.forEach(([r,c])=>{ o[r][c] = idx; });
+              placed = true;
+            }
+          }
+          if(!placed) ok = false;
+        }
+        if(!ok) break;
+      }
+      if(ok) return {o, list};
+    }
+    throw new Error("placement failed");
+  }
+
+  function shipAt(k){ return occ[Math.floor(k/N)][k%N]; }
+  function isSunk(s){ return s.hits.size === s.cells.length; }
+  function need(){ return Math.min(3, N*N - fired.size); }
+
+  function buildBoard(){
+    boardEl.innerHTML = "";
+    boardEl.appendChild(document.createElement("div"));
+    for(let c=0; c<N; c++){
+      const l = document.createElement("div"); l.className="lbl"; l.textContent = COLS[c];
+      boardEl.appendChild(l);
+    }
+    for(let r=0; r<N; r++){
+      const l = document.createElement("div"); l.className="lbl"; l.textContent = r+1;
+      boardEl.appendChild(l);
+      for(let c=0; c<N; c++){
+        const k = r*N+c;
+        const b = document.createElement("button");
+        b.className = "cell"; b.type = "button";
+        b.setAttribute("aria-label", keyName(k));
+        const rn = document.createElement("span"); rn.className="rn"; b.appendChild(rn);
+        b.addEventListener("click", ()=>onCell(k, false));
+        b.addEventListener("contextmenu", e=>{ e.preventDefault(); onCell(k, true); });
+        boardEl.appendChild(b);
+        cells[k] = b;
+      }
+    }
+  }
+
+  function cycleMark(k){
+    const m = marks.get(k);
+    if(!m) marks.set(k,"x");
+    else if(m === "x") marks.set(k,"o");
+    else marks.delete(k);
+  }
+
+  function onCell(k, forceMark){
+    if(forceMark || mode === "mark"){ cycleMark(k); render(); return; }
+    if(over || fired.has(k)) return;
+    if(selected.has(k)) selected.delete(k);
+    else if(selected.size < need()) selected.add(k);
+    render();
+  }
+
+  function fire(){
+    if(over || selected.size !== need() || selected.size === 0) return;
+    round++;
+    const hits = {}; let miss = 0; const sunkNow = [];
+    const shots = [...selected].sort((a,b)=>a-b);
+    for(const k of shots){
+      fired.set(k, round);
+      const idx = shipAt(k);
+      if(idx >= 0){
+        const s = ships[idx];
+        s.hits.add(k);
+        hits[s.type] = (hits[s.type]||0) + 1;
+        if(isSunk(s)) sunkNow.push(s.type);
+      } else miss++;
+    }
+    selected.clear();
+    lastRound = hits;
+    log.unshift({round, shots, hits, miss, sunkNow});
+    if(ships.every(isSunk)) finish(true);
+    render();
+  }
+
+  function finish(won){
+    over = true;
+    const shots = fired.size;
+    const hitCount = ships.reduce((a,s)=>a+s.hits.size,0);
+    const b = $("banner");
+    const closeBtn = `<button class="close" type="button" aria-label="关闭提示">✕</button>`;
+    b.innerHTML = closeBtn + (won
+      ? `<strong>全部潜艇已击沉</strong>共 ${round} 轮、${shots} 枚炸弹，命中率 ${Math.round(hitCount/shots*100)}%。`
+      : `<strong>答案已揭晓</strong>半透明的是没被击沉的潜艇。点「新游戏」再来一局。`);
+    b.classList.add("show");
+  }
+
+  function shapeIcon(id){
+    return `<span class="ico" aria-hidden="true">${SVG[id]}</span>`;
+  }
+
+  function drawSubs(){
+    boardEl.querySelectorAll(".subpic").forEach(e=>e.remove());
+    ships.forEach(s=>{
+      const sunk = isSunk(s);
+      if(!(over || (reveal && sunk))) return;
+      const d = document.createElement("div");
+      d.className = "subpic" + (over && !sunk ? " ghost" : "");
+      d.style.gridRow = `${s.r0+2} / span ${s.h}`;
+      d.style.gridColumn = `${s.c0+2} / span ${s.w}`;
+      d.innerHTML = SVG[s.type];
+      boardEl.appendChild(d);
+    });
+  }
+
+  function render(){
+    const n = need();
+    cells.forEach((el,k)=>{
+      const idx = shipAt(k);
+      const f = fired.has(k);
+      let cls = "cell";
+      if(selected.has(k)) cls += " sel";
+      if(f){
+        cls += " fired";
+        if(reveal || over){
+          cls += idx >= 0 ? " hit" : " miss";
+          if(idx >= 0 && isSunk(ships[idx])) cls += " sunk";
+        }
+      } else if(over && idx >= 0) cls += " ship";
+      el.className = cls;
+      const m = marks.get(k);
+      if(m) el.dataset.mark = m; else delete el.dataset.mark;
+      el.firstChild.textContent = f ? fired.get(k) : "";
+    });
+    drawSubs();
+
+    $("roundLbl").textContent = over ? "已结束" : `第 ${round+1} 轮`;
+    $("pickedLbl").textContent = selected.size;
+    $("needLbl").textContent = n;
+    $("fireBtn").disabled = over || selected.size !== n || n === 0;
+    $("giveUpBtn").disabled = over;
+    $("curRoundLbl").textContent = round ? `第 ${round} 轮` : "尚未投弹";
+
+    const tb = $("statBody"); tb.innerHTML = "";
+    for(const id of DISPLAY){
+      const t = TYPE[id];
+      const mine = ships.filter(s=>s.type===id);
+      const total = mine.reduce((a,s)=>a+s.cells.length,0);
+      const got = mine.reduce((a,s)=>a+s.hits.size,0);
+      const sunk = mine.filter(isSunk).length;
+      const now = lastRound[id] || 0;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td><span class="tname">${shapeIcon(id)}${t.name} ×${t.count}</span></td>
+        <td class="${now?"now":""}">${now || "–"}</td>
+        <td>${got} / ${total}</td>
+        <td>${sunk} / ${t.count}</td>`;
+      tb.appendChild(tr);
+    }
+    const allCells = ships.reduce((a,s)=>a+s.cells.length,0);
+    const hitCells = ships.reduce((a,s)=>a+s.hits.size,0);
+    $("totals").textContent = `已投 ${fired.size} 枚，命中 ${hitCells} 次；潜艇共 ${allCells} 格，还剩 ${allCells-hitCells} 格。`;
+
+    $("histCount").textContent = log.length ? `共 ${log.length} 轮` : "";
+    const ul = $("log"); ul.innerHTML = "";
+    if(!log.length){
+      ul.innerHTML = '<li class="empty">还没有投弹。在海域里选 3 个格子，然后点「投弹」。</li>';
+    }
+    for(const e of log){
+      const parts = DISPLAY.filter(id=>e.hits[id]).map(id=>`${TYPE[id].name} ×${e.hits[id]}`);
+      if(e.miss) parts.push(`落空 ×${e.miss}`);
+      const li = document.createElement("li");
+      let html = `<span class="head"><span class="rnd">第 ${e.round} 轮</span><span class="coords">${e.shots.map(keyName).join("  ")}</span></span><span class="res">${parts.join("，")}</span>`;
+      if(e.sunkNow.length) html += `<span class="res sunkmsg">击沉：${e.sunkNow.map(id=>TYPE[id].name).join("、")}</span>`;
+      li.innerHTML = html;
+      ul.appendChild(li);
+    }
+  }
+
+  function newGame(){
+    const p = placeFleet();
+    occ = p.o; ships = p.list;
+    fired = new Map(); selected = new Set(); marks = new Map();
+    round = 0; log = []; lastRound = {}; over = false;
+    $("banner").classList.remove("show");
+    resetGiveUp();
+    render();
+  }
+
+  function setMode(m){
+    mode = m;
+    $("modeFire").setAttribute("aria-pressed", m==="fire");
+    $("modeMark").setAttribute("aria-pressed", m==="mark");
+  }
+
+  let giveUpTimer = null;
+  function resetGiveUp(){
+    clearTimeout(giveUpTimer);
+    $("giveUpBtn").textContent = "揭晓答案";
+    $("giveUpBtn").dataset.armed = "";
+  }
+
+  $("banner").addEventListener("click", e=>{
+    if(e.target.closest(".close")) $("banner").classList.remove("show");
+  });
+  $("fireBtn").addEventListener("click", fire);
+  $("clearSelBtn").addEventListener("click", ()=>{ selected.clear(); render(); });
+  $("clearMarkBtn").addEventListener("click", ()=>{ marks.clear(); render(); });
+  $("newBtn").addEventListener("click", newGame);
+  $("modeFire").addEventListener("click", ()=>setMode("fire"));
+  $("modeMark").addEventListener("click", ()=>setMode("mark"));
+  $("revealChk").addEventListener("change", e=>{ reveal = e.target.checked; render(); });
+  $("giveUpBtn").addEventListener("click", ()=>{
+    const b = $("giveUpBtn");
+    if(b.dataset.armed){ resetGiveUp(); selected.clear(); finish(false); render(); return; }
+    b.dataset.armed = "1"; b.textContent = "再点一次确认";
+    giveUpTimer = setTimeout(resetGiveUp, 3000);
+  });
+
+  reveal = false;
+  setMode("fire");
+  buildBoard();
+  newGame();
+})();
+</script>
+</body>
+</html>

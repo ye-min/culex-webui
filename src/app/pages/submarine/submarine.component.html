@@ -1,0 +1,67 @@
+<main class="container">
+<header class="page-header"><a routerLink="/tools" class="back-link">‹ Tools</a>
+    <h1>潜水艇大战</h1>
+    <p class="sub">每轮投 3 枚深水炸弹，靠战报推理出 12 艘潜艇的位置。</p>
+  </header>
+
+  <div class="layout">
+    <div class="left">
+      <div class="board-area">
+        <div class="board" id="board" aria-label="10×10 海域"></div>
+        <div class="banner" id="banner" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="bottom">
+        <section class="panel">
+          <div class="status">
+            <span class="round" id="roundLbl">第 1 轮</span>
+            <span class="picked">已选 <b id="pickedLbl">0</b> / <span id="needLbl">3</span></span>
+          </div>
+          <div class="row">
+            <button class="btn primary" id="fireBtn" disabled>投弹</button>
+            <button class="btn" id="clearSelBtn">清除选择</button>
+          </div>
+          <div class="seg" role="group" aria-label="点击模式">
+            <button id="modeFire" aria-pressed="true">选投弹点</button>
+            <button id="modeMark" aria-pressed="false">做标记 ✕ / ●</button>
+          </div>
+          <label class="chk"><input type="checkbox" id="revealChk"> 简单模式：显示每个点是否命中</label>
+          <div class="row">
+            <button class="btn" id="newBtn">新游戏</button>
+            <button class="btn" id="clearMarkBtn">清空标记</button>
+            <button class="btn" id="giveUpBtn">揭晓答案</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>当轮战报 <span id="curRoundLbl">尚未投弹</span></h2>
+          <table>
+            <thead><tr><th>潜艇</th><th>本轮命中</th><th>累计命中</th><th>击沉</th></tr></thead>
+            <tbody id="statBody"></tbody>
+          </table>
+          <p class="hint" id="totals"></p>
+        </section>
+      </div>
+    </div>
+
+    <div class="right">
+      <section class="panel rules">
+        <details>
+          <summary>规则</summary>
+          <ul>
+            <li>海域藏有：1×1 潜艇 5 艘、1×2 潜艇 3 艘、1×3 潜艇 2 艘（均为横向）、2×2 潜艇 1 艘、十字潜艇（5 格）1 艘。</li>
+            <li>潜艇之间互不接触，斜角也不相邻。</li>
+            <li>每轮选 3 个没投过的格子投弹，战报只告诉你各类潜艇被命中几次，不告诉你是哪一格。</li>
+            <li>标记模式下点击格子循环切换 ✕ / ● / 清空，电脑上右键也能直接标记。</li>
+            <li>一艘潜艇所有格子都被命中即击沉，全部击沉游戏结束。</li>
+          </ul>
+        </details>
+      </section>
+      <section class="panel history">
+        <h2>历史战报 <span id="histCount"></span></h2>
+        <ul class="log" id="log"></ul>
+      </section>
+    </div>
+  </div>
+
+</main>

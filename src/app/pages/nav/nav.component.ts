@@ -19,6 +19,7 @@ interface ZoneClock {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']

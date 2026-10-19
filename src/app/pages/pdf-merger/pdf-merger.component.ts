@@ -7,6 +7,7 @@ interface PdfEntry {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-pdf-merger',
   templateUrl: './pdf-merger.component.html',
   styleUrls: ['./pdf-merger.component.css']
@@ -121,7 +122,7 @@ export class PdfMergerComponent {
         pages.forEach(p => merged.addPage(p));
       }
       const bytes = await merged.save();
-      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const blob = new Blob([new Uint8Array(bytes).buffer], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
