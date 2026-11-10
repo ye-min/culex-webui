@@ -16,6 +16,12 @@ interface Tool {
 export class ToolsComponent {
   tools: Tool[] = [
     {
+      title: '游戏天赋测试',
+      desc: '通过反应速度、瞄准精度、记忆力、手速和动态追踪测试，生成能力雷达图',
+      path: '/game-talent-test',
+      icon: 'gamepad'
+    },
+    {
       title: '潜水艇大战',
       desc: '每轮三枚深水炸弹，根据战报推理，找出海域中的十二艘潜艇',
       path: '/submarine',

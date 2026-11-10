@@ -1,0 +1,126 @@
+<main class="fullscreen-page">
+  <header class="page-header">
+    <a class="close-button" routerLink="/tools" aria-label="关闭游戏天赋测试，返回 Tools" title="关闭测试">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+    </a>
+    <h1>游戏天赋测试</h1>
+    <p class="sub">5 项小测试，约 3 分钟，了解你的反应、瞄准、记忆、手速与追踪能力。</p>
+  </header>
+  <div class="layout">
+    <div id="stage">
+      @switch (screen) {
+        @case ('home') {
+          <section class="card">
+            <h2>你有当职业选手的天赋吗？</h2>
+            <p class="desc">5 项小测试，约 3 分钟，测出你的游戏能力雷达图</p>
+            <div class="list">
+              @for (test of tests; track test.key) {
+                <div>{{ test.icon }} {{ test.name }}</div>
+              }
+            </div>
+            <div><button class="btn primary" (click)="next()">开始测试</button></div>
+          </section>
+        }
+        @case ('intro') {
+          <section class="card">
+            <div class="test-icon">{{ active.icon }}</div>
+            <h2>{{ active.name }}</h2>
+            <p class="desc">{{ active.description }}</p>
+            <button class="btn primary" (click)="startTest()">开始</button>
+          </section>
+        }
+        @case ('playing') {
+          @switch (active.key) {
+            @case ('reaction') {
+              <section>
+                <div class="info"><span>第 <b>{{ reactionTimes.length < 5 ? reactionTimes.length + 1 : 5 }}</b> / 5 轮</span><span>上一次：<b>{{ reactionTimes.length ? reactionTimes[reactionTimes.length - 1] + ' ms' : '-' }}</b></span></div>
+                <button id="react-box" [class.r-wait]="reactionState === 'wait'" [class.r-go]="reactionState === 'go'" [class.r-idle]="reactionState !== 'wait' && reactionState !== 'go'" (pointerdown)="react()" (keydown.enter)="react()" (keydown.space)="$event.preventDefault(); react()">{{ reactionLabel }}</button>
+              </section>
+            }
+            @case ('aim') {
+              <section>
+                <div class="info"><span>剩余 <b>{{ 20 - hits }}</b></span><span>失误 <b>{{ misses }}</b></span><span>用时 <b>{{ elapsed.toFixed(2) }}</b>s</span></div>
+                <div id="aim-arena" #arena (pointerdown)="missTarget($event)">
+                  <button class="target" aria-label="靶子" [style.left.px]="target.x" [style.top.px]="target.y" (pointerdown)="hitTarget($event)"></button>
+                  @for (dot of missDots; track dot) {
+                    <div class="miss-dot" [style.left.px]="dot.x" [style.top.px]="dot.y"></div>
+                  }
+                </div>
+              </section>
+            }
+            @case ('memory') {
+              <section class="card">
+                <div class="info"><span>关卡 <b>{{ level + 1 }}</b></span><span>序列长度 <b>{{ sequence.length }}</b></span></div>
+                <div class="mem-tip" aria-live="polite">{{ memoryTip }}</div>
+                <div id="mem-grid" [class.lock]="!accepting">
+                  @for (cell of cells; track cell) {
+                    <button class="cell" [class.on]="cellStates[cell] === 'on'" [class.ok]="cellStates[cell] === 'ok'" [class.bad]="cellStates[cell] === 'bad'" [attr.aria-label]="'方块 ' + (cell + 1)" [disabled]="!accepting" (pointerdown)="selectCell(cell)" (keydown.enter)="selectCell(cell)" (keydown.space)="$event.preventDefault(); selectCell(cell)"></button>
+                  }
+                </div>
+              </section>
+            }
+            @case ('cps') {
+              <section class="card">
+                <div class="info"><span>点击数 <b>{{ clicks }}</b></span><span>剩余 <b>{{ remaining.toFixed(1) }}</b>s</span></div>
+                <button id="cps-btn" [disabled]="ended" (pointerdown)="clickSpeed($event)" (keydown.enter)="clickSpeed($event)" (keydown.space)="clickSpeed($event)">{{ ended ? '时间到！' : '狂点我！' }}</button>
+                <div><span class="big-num">{{ cps.toFixed(1) }}</span> 次/秒</div>
+              </section>
+            }
+            @case ('track') {
+              <section>
+                <div class="info"><span>命中率 <b>{{ trackingPercent }}</b>%</span><span>剩余 <b>{{ remaining.toFixed(1) }}</b>s</span></div>
+                <canvas id="track-canvas" #trackCanvas aria-label="动态追踪测试：让准星停留在移动的小球上" (pointermove)="movePointer($event)" (pointerdown)="movePointer($event)" (pointerleave)="leavePointer()" (pointercancel)="leavePointer()"></canvas>
+                <div class="bar"><i [style.width.%]="trackingProgress"></i></div>
+                <p class="desc tracking-hint">把鼠标移到画面中开始；手机上请按住屏幕拖动</p>
+              </section>
+            }
+          }
+        }
+        @case ('finished') {
+          <section class="card">
+            <div class="test-icon">{{ active.icon }}</div>
+            @if (activeResult; as result) {
+              <h2>{{ active.name }}：{{ result.score }} 分</h2>
+              <p class="desc">{{ result.raw }}</p>
+            }
+            <button class="btn primary" (click)="next()">{{ current === tests.length - 1 ? '查看总评' : '下一项' }}</button>
+          </section>
+        }
+        @case ('result') {
+          <section class="card">
+            <div class="rank">{{ ranking[0] }}</div>
+            <div class="title">{{ ranking[1] }}</div>
+            <p class="desc">综合得分 <b>{{ total }}</b> / 100</p>
+            <p class="desc">{{ ranking[2] }}</p>
+            <svg id="radar" viewBox="0 0 320 300" role="img" aria-label="五项游戏能力雷达图">
+              @for (radius of [25, 50, 75, 100]; track radius) {
+                <polygon class="radar-grid" [attr.points]="radarPolygon(radius)"/>
+              }
+              @for (test of tests; track test.key; let i = $index) {
+                <g>
+                  <line class="radar-grid" x1="160" y1="150" [attr.x2]="radarPoint(i, 100).x" [attr.y2]="radarPoint(i, 100).y"/>
+                  <text class="radar-label" [attr.x]="radarPoint(i, 127).x" [attr.y]="radarPoint(i, 127).y">{{ test.name }}</text>
+                </g>
+              }
+              <polygon class="radar-value" [attr.points]="radarPolygon(100, true)"/>
+            </svg>
+            <div class="stats">
+              @for (test of tests; track test.key) {
+                <div class="stat">
+                  <div class="k">{{ test.icon }} {{ test.name }}</div>
+                  <div class="v">{{ score(test) }}</div>
+                  <div class="raw">{{ raw(test) }}</div>
+                </div>
+              }
+            </div>
+            <div class="advice">
+              💪 最强项：<b>{{ ordered[0].name }}</b>（{{ score(ordered[0]) }} 分），推荐尝试 {{ ordered[0].genre }}。<br>
+              📈 待提升：<b>{{ ordered[4].name }}</b>（{{ score(ordered[4]) }} 分），可以针对性多练练。
+            </div>
+            <button class="btn primary" (click)="restart()">再测一次</button>
+          </section>
+        }
+      }
+    </div>
+  </div>
+</main>

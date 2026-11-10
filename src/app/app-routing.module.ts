@@ -1,4 +1,5 @@
 import { SubmarineComponent } from './pages/submarine/submarine.component';
+import { GameTalentTestComponent } from './pages/game-talent-test/game-talent-test.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'about',   component: AboutComponent },
   { path: 'nav',           component: NavComponent },
   { path: 'tools',         component: ToolsComponent },
+  { path: 'game-talent-test', component: GameTalentTestComponent, title: '游戏天赋测试', data: { fullscreen: true } },
   { path: 'pdf-converter', component: PdfConverterComponent },
   { path: 'pdf-merger',    component: PdfMergerComponent },
   { path: 'ip-info',       component: IpInfoComponent },

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: false,
@@ -8,4 +9,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'culex-webui';
+  private readonly router = inject(Router);
+
+  get fullscreen(): boolean {
+    return this.router.routerState.snapshot.root.firstChild?.data['fullscreen'] === true;
+  }
 }

@@ -82,4 +82,24 @@ describe('Angular 21 application integration', () => {
     fixture.destroy();
   }));
 
+  it('opens the talent test fullscreen and restores navigation when closed', fakeAsync(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const router = TestBed.inject(Router);
+    fixture.detectChanges();
+    router.navigateByUrl('/game-talent-test');
+    tick();
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('app-navbar')).toBeNull();
+    expect(element.querySelector('.fullscreen-page')).toBeTruthy();
+    expect(element.querySelector('.sidebar')).toBeNull();
+    element.querySelector<HTMLAnchorElement>('.close-button')!.click();
+    tick();
+    fixture.detectChanges();
+    expect(router.url).toBe('/tools');
+    expect(element.querySelector('app-navbar nav')).toBeTruthy();
+    expect(element.querySelector('app-game-talent-test')).toBeNull();
+    fixture.destroy();
+  }));
+
 });

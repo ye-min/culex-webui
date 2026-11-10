@@ -12,6 +12,10 @@
         class="tool-card">
         <div class="tool-icon-wrap">
           <ng-container [ngSwitch]="tool.icon">
+            <svg *ngSwitchCase="'gamepad'" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 7h10a4 4 0 0 1 4 3.4l1 6a2.5 2.5 0 0 1-4.2 2.2L15 16H9l-2.8 2.6A2.5 2.5 0 0 1 2 16.4l1-6A4 4 0 0 1 7 7Z"/>
+              <path d="M6 11v4m-2-2h4m7-1h.01M18 14h.01"/>
+            </svg>
             <svg *ngSwitchCase="'submarine'" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="5" y="10" width="16" height="9" rx="4.5"/><path d="M10 10V6h5V3h3M2 12v5m0-2h3"/><circle cx="11" cy="14.5" r="1.5"/><circle cx="17" cy="14.5" r="1.5"/>
             </svg>

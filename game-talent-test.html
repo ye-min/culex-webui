@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>游戏天赋测试</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: radial-gradient(circle at 20% 0%, #1e1b4b 0%, #0b0b1a 60%);
+    color: #e5e7eb;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    user-select: none; -webkit-user-select: none;
+  }
+  header { width: 100%; max-width: 760px; padding: 20px 16px 8px; display: flex; justify-content: space-between; align-items: center; }
+  header h1 { font-size: 20px; letter-spacing: 2px; background: linear-gradient(90deg,#a78bfa,#22d3ee); -webkit-background-clip: text; color: transparent; }
+  .steps { display: flex; gap: 6px; }
+  .steps span { width: 28px; height: 6px; border-radius: 3px; background: #374151; transition: background .3s; }
+  .steps span.done { background: #22d3ee; }
+  .steps span.cur { background: #a78bfa; }
+  #stage { width: 100%; max-width: 760px; padding: 12px 16px 40px; flex: 1; }
+  .card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 28px; text-align: center; }
+  h2 { font-size: 26px; margin-bottom: 10px; }
+  p.desc { color: #9ca3af; line-height: 1.7; margin-bottom: 22px; }
+  .btn {
+    display: inline-block; border: none; cursor: pointer; font-size: 17px; font-weight: 600;
+    padding: 13px 34px; border-radius: 999px; color: #fff;
+    background: linear-gradient(90deg,#7c3aed,#0891b2); box-shadow: 0 6px 20px rgba(124,58,237,.35);
+    transition: transform .1s;
+  }
+  .btn:active { transform: scale(.96); }
+  .btn.ghost { background: transparent; border: 1px solid #4b5563; box-shadow: none; }
+  .info { display: flex; justify-content: space-between; color: #9ca3af; font-size: 14px; margin-bottom: 10px; }
+  .info b { color: #fff; }
+  .list { text-align: left; display: inline-block; margin: 0 auto 24px; color: #cbd5e1; line-height: 2; }
+
+  /* 反应 */
+  #react-box {
+    height: 340px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 700; cursor: pointer; transition: background .08s;
+  }
+  #react-box small { font-size: 15px; font-weight: 400; margin-top: 8px; opacity: .85; }
+  .r-idle { background: #1f2937; } .r-wait { background: #b91c1c; } .r-go { background: #16a34a; } .r-early { background: #b45309; }
+
+  /* 瞄准 */
+  #aim-arena { position: relative; height: 380px; border-radius: 16px; background: #111827; overflow: hidden; cursor: crosshair;
+    background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+    background-size: 30px 30px; }
+  .target { position: absolute; width: 48px; height: 48px; border-radius: 50%; transform: translate(-50%,-50%);
+    background: radial-gradient(circle,#fff 0 18%,#ef4444 19% 38%,#fff 39% 58%,#ef4444 59%); animation: pop .15s ease-out; }
+  @keyframes pop { from { transform: translate(-50%,-50%) scale(.3); } }
+  .miss-dot { position: absolute; width: 8px; height: 8px; margin: -4px; border-radius: 50%; background: #f59e0b; opacity: .7; pointer-events: none; }
+
+  /* 记忆 */
+  #mem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: min(340px, 100%); margin: 0 auto; }
+  .cell { aspect-ratio: 1; border-radius: 14px; background: #1f2937; cursor: pointer; transition: background .12s, transform .1s; }
+  .cell.on { background: #a78bfa; box-shadow: 0 0 24px #a78bfa; }
+  .cell.ok { background: #22d3ee; }
+  .cell.bad { background: #ef4444; }
+  #mem-grid.lock .cell { cursor: default; }
+  .mem-tip { height: 28px; margin: 14px 0 6px; color: #cbd5e1; }
+
+  /* 手速 */
+  #cps-btn { width: 220px; height: 220px; border-radius: 50%; border: none; font-size: 22px; font-weight: 700; color: #fff; cursor: pointer;
+    background: radial-gradient(circle at 35% 30%, #c4b5fd, #6d28d9); box-shadow: 0 10px 40px rgba(124,58,237,.5); margin: 10px 0 20px; touch-action: manipulation; }
+  #cps-btn:active { transform: scale(.95); }
+  #cps-btn:disabled { filter: grayscale(.8); cursor: default; }
+  .big-num { font-size: 48px; font-weight: 800; color: #fff; }
+
+  /* 追踪 */
+  #track-canvas { width: 100%; height: 380px; border-radius: 16px; background: #111827; display: block; cursor: none; touch-action: none; }
+  .bar { height: 8px; border-radius: 4px; background: #374151; overflow: hidden; margin-top: 10px; }
+  .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,#7c3aed,#22d3ee); }
+
+  /* 结果 */
+  .rank { font-size: 90px; font-weight: 900; line-height: 1; background: linear-gradient(135deg,#fde047,#f472b6,#a78bfa); -webkit-background-clip: text; color: transparent; }
+  .title { font-size: 24px; font-weight: 700; margin: 8px 0 4px; }
+  #radar { width: 320px; height: 300px; max-width: 100%; margin: 10px auto; display: block; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 10px; margin: 16px 0 22px; }
+  .stat { background: rgba(255,255,255,.05); border-radius: 12px; padding: 12px; }
+  .stat .k { color: #9ca3af; font-size: 13px; }
+  .stat .v { font-size: 22px; font-weight: 700; color: #fff; margin: 4px 0 2px; }
+  .stat .raw { color: #6b7280; font-size: 12px; }
+  .advice { text-align: left; background: rgba(34,211,238,.07); border-left: 3px solid #22d3ee; padding: 14px 16px; border-radius: 8px; line-height: 1.8; margin-bottom: 22px; color: #cbd5e1; }
+  .result-flash { font-size: 15px; color: #a78bfa; margin-top: 12px; min-height: 22px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🎮 游戏天赋测试</h1>
+  <div class="steps" id="steps"></div>
+</header>
+<div id="stage"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const stage = $('#stage');
+const clamp = (v, a = 0, b = 100) => Math.max(a, Math.min(b, v));
+const rand = (a, b) => a + Math.random() * (b - a);
+const now = () => performance.now();
+
+const TESTS = [
+  { key: 'reaction', name: '反应速度', icon: '⚡', run: testReaction },
+  { key: 'aim',      name: '瞄准精度', icon: '🎯', run: testAim },
+  { key: 'memory',   name: '记忆力',   icon: '🧠', run: testMemory },
+  { key: 'cps',      name: '手速',     icon: '🖱️', run: testCPS },
+  { key: 'track',    name: '动态追踪', icon: '👁️', run: testTrack },
+];
+const results = {};
+let current = -1;
+let cleanup = null;
+
+function renderSteps() {
+  $('#steps').innerHTML = TESTS.map((t, i) =>
+    `<span class="${i < current ? 'done' : i === current ? 'cur' : ''}"></span>`).join('');
+}
+
+function setStage(html) {
+  if (cleanup) { cleanup(); cleanup = null; }
+  stage.innerHTML = html;
+}
+
+function home() {
+  current = -1; renderSteps();
+  setStage(`
+    <div class="card">
+      <h2>你有当职业选手的天赋吗？</h2>
+      <p class="desc">5 项小测试，约 3 分钟，测出你的游戏能力雷达图</p>
+      <div class="list">
+        ${TESTS.map(t => `<div>${t.icon} ${t.name}</div>`).join('')}
+      </div><br>
+      <button class="btn" id="go">开始测试</button>
+    </div>`);
+  $('#go').onclick = () => next();
+}
+
+function next() {
+  current++;
+  renderSteps();
+  if (current >= TESTS.length) return showResult();
+  TESTS[current].run();
+}
+
+// 每项测试结束后的过渡页
+function finishTest(key, score, raw) {
+  results[key] = { score: Math.round(clamp(score)), raw };
+  const t = TESTS[current];
+  setStage(`
+    <div class="card">
+      <div style="font-size:48px">${t.icon}</div>
+      <h2>${t.name}：${results[key].score} 分</h2>
+      <p class="desc">${raw}</p>
+      <button class="btn" id="nx">${current === TESTS.length - 1 ? '查看总评' : '下一项'}</button>
+    </div>`);
+  $('#nx').onclick = () => next();
+}
+
+function intro(icon, title, desc, onStart) {
+  setStage(`
+    <div class="card">
+      <div style="font-size:48px">${icon}</div>
+      <h2>${title}</h2>
+      <p class="desc">${desc}</p>
+      <button class="btn" id="st">开始</button>
+    </div>`);
+  $('#st').onclick = onStart;
+}
+
+/* ========== 1. 反应速度 ========== */
+function testReaction() {
+  intro('⚡', '反应速度', '屏幕变成<b style="color:#4ade80">绿色</b>时立刻点击。<br>共 5 轮，提前点击会重来这一轮。', () => {
+    setStage(`
+      <div class="info"><span>第 <b id="rd">1</b> / 5 轮</span><span>上一次：<b id="last">-</b></span></div>
+      <div id="react-box" class="r-idle">点击开始</div>`);
+    const box = $('#react-box');
+    const times = [];
+    let state = 'idle', timer = null, goAt = 0;
+
+    function arm() {
+      state = 'wait';
+      box.className = 'r-wait';
+      box.innerHTML = '等待绿色...';
+      timer = setTimeout(() => {
+        state = 'go';
+        box.className = 'r-go';
+        box.innerHTML = '点！';
+        goAt = now();
+      }, rand(1200, 3800));
+    }
+
+    box.addEventListener('pointerdown', () => {
+      if (state === 'idle' || state === 'show') return arm();
+      if (state === 'wait') {
+        clearTimeout(timer);
+        state = 'show';
+        box.className = 'r-early';
+        box.innerHTML = '太早了！<small>点击重试本轮</small>';
+        return;
+      }
+      if (state === 'go') {
+        const ms = Math.round(now() - goAt);
+        times.push(ms);
+        $('#last').textContent = ms + ' ms';
+        if (times.length >= 5) {
+          state = 'done';
+          const avg = Math.round(times.reduce((a, b) => a + b) / times.length);
+          // 150ms 满分，450ms 0 分
+          setTimeout(() => finishTest('reaction', (450 - avg) / 3,
+            `平均反应时间 ${avg} ms（${times.join(' / ')}）`), 500);
+          box.className = 'r-idle';
+          box.innerHTML = `${ms} ms`;
+          return;
+        }
+        $('#rd').textContent = times.length + 1;
+        state = 'show';
+        box.className = 'r-idle';
+        box.innerHTML = `${ms} ms<small>点击继续</small>`;
+      }
+    });
+    cleanup = () => clearTimeout(timer);
+  });
+}
+
+/* ========== 2. 瞄准精度 ========== */
+function testAim() {
+  const TOTAL = 20;
+  intro('🎯', '瞄准精度', `尽快点中 ${TOTAL} 个靶子。<br>点空会记为失误并扣分。`, () => {
+    setStage(`
+      <div class="info"><span>剩余 <b id="left">${TOTAL}</b></span><span>失误 <b id="miss">0</b></span><span>用时 <b id="tm">0.00</b>s</span></div>
+      <div id="aim-arena"></div>`);
+    const arena = $('#aim-arena');
+    let hits = 0, misses = 0, start = 0, raf;
+
+    function spawn() {
+      const r = arena.getBoundingClientRect();
+      const t = document.createElement('div');
+      t.className = 'target';
+      t.style.left = rand(30, r.width - 30) + 'px';
+      t.style.top = rand(30, r.height - 30) + 'px';
+      t.addEventListener('pointerdown', e => {
+        e.stopPropagation();
+        t.remove();
+        hits++;
+        $('#left').textContent = TOTAL - hits;
+        if (hits >= TOTAL) return done();
+        spawn();
+      });
+      arena.appendChild(t);
+    }
+    arena.addEventListener('pointerdown', e => {
+      if (!start) return;
+      misses++;
+      $('#miss').textContent = misses;
+      const r = arena.getBoundingClientRect();
+      const d = document.createElement('div');
+      d.className = 'miss-dot';
+      d.style.left = (e.clientX - r.left) + 'px';
+      d.style.top = (e.clientY - r.top) + 'px';
+      arena.appendChild(d);
+    });
+    function tick() { $('#tm').textContent = ((now() - start) / 1000).toFixed(2); raf = requestAnimationFrame(tick); }
+    function done() {
+      cancelAnimationFrame(raf);
+      const total = now() - start;
+      const per = total / TOTAL;
+      const acc = Math.round(TOTAL / (TOTAL + misses) * 100);
+      // 每靶 450ms 满分，1300ms 0 分；每次失误扣 4 分
+      const score = (1300 - per) / 8.5 - misses * 4;
+      finishTest('aim', score, `总用时 ${(total / 1000).toFixed(2)}s，平均每靶 ${Math.round(per)} ms，命中率 ${acc}%`);
+    }
+    start = now();
+    spawn();
+    tick();
+    cleanup = () => cancelAnimationFrame(raf);
+  });
+}
+
+/* ========== 3. 记忆力 ========== */
+function testMemory() {
+  intro('🧠', '记忆力', '观察方块闪烁的顺序，然后按相同顺序点击。<br>每过一关序列加长，错一次就结束。', () => {
+    setStage(`
+      <div class="card">
+        <div class="info"><span>关卡 <b id="lv">1</b></span><span>序列长度 <b id="len">3</b></span></div>
+        <div class="mem-tip" id="tip">仔细看...</div>
+        <div id="mem-grid" class="lock">${'<div class="cell"></div>'.repeat(9)}</div>
+      </div>`);
+    const cells = [...document.querySelectorAll('.cell')];
+    const grid = $('#mem-grid');
+    let seq = [], input = 0, level = 0, timers = [], accepting = false;
+    const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+
+    function addStep() {
+      let n;
+      do { n = Math.floor(Math.random() * 9); } while (n === seq[seq.length - 1]);
+      seq.push(n);
+    }
+    function play() {
+      accepting = false;
+      grid.classList.add('lock');
+      $('#tip').textContent = '仔细看...';
+      $('#lv').textContent = level + 1;
+      $('#len').textContent = seq.length;
+      const speed = Math.max(300, 550 - level * 20);
+      seq.forEach((n, i) => {
+        later(() => cells[n].classList.add('on'), 600 + i * speed);
+        later(() => cells[n].classList.remove('on'), 600 + i * speed + speed * 0.65);
+      });
+      later(() => {
+        accepting = true; input = 0;
+        grid.classList.remove('lock');
+        $('#tip').textContent = '轮到你了！';
+      }, 600 + seq.length * speed);
+    }
+    cells.forEach((c, i) => c.addEventListener('pointerdown', () => {
+      if (!accepting) return;
+      if (i === seq[input]) {
+        c.classList.add('ok');
+        later(() => c.classList.remove('ok'), 180);
+        input++;
+        if (input === seq.length) {
+          accepting = false;
+          level++;
+          $('#tip').textContent = '✔ 正确！';
+          addStep();
+          later(play, 700);
+        }
+      } else {
+        accepting = false;
+        c.classList.add('bad');
+        cells[seq[input]].classList.add('on');
+        $('#tip').textContent = '✘ 记错了';
+        const best = seq.length - 1; // 最后完整记住的长度
+        // 记住 2 个 = 0 分，12 个 = 100 分
+        later(() => finishTest('memory', (best - 2) * 10, `最长记住 ${best} 步序列（通过 ${level} 关）`), 1100);
+      }
+    }));
+    seq = []; addStep(); addStep(); addStep();
+    play();
+    cleanup = () => timers.forEach(clearTimeout);
+  });
+}
+
+/* ========== 4. 手速 ========== */
+function testCPS() {
+  const DUR = 5;
+  intro('🖱️', '手速测试', `在 ${DUR} 秒内尽可能快地点击按钮。<br>第一次点击开始计时。`, () => {
+    setStage(`
+      <div class="card">
+        <div class="info"><span>点击数 <b id="cnt">0</b></span><span>剩余 <b id="rem">${DUR.toFixed(1)}</b>s</span></div>
+        <button id="cps-btn">狂点我！</button>
+        <div><span class="big-num" id="cpsv">0.0</span> <span style="color:#9ca3af">次/秒</span></div>
+      </div>`);
+    const btn = $('#cps-btn');
+    let count = 0, start = 0, raf, ended = false;
+    function tick() {
+      const t = (now() - start) / 1000;
+      $('#rem').textContent = Math.max(0, DUR - t).toFixed(1);
+      $('#cpsv').textContent = (count / Math.max(t, 0.2)).toFixed(1);
+      if (t >= DUR) return end();
+      raf = requestAnimationFrame(tick);
+    }
+    function end() {
+      ended = true;
+      btn.disabled = true;
+      btn.textContent = '时间到！';
+      const cps = count / DUR;
+      $('#cpsv').textContent = cps.toFixed(1);
+      // 4 次/秒 0 分，12 次/秒 100 分
+      setTimeout(() => finishTest('cps', (cps - 4) * 12.5, `${DUR} 秒点击 ${count} 次，平均 ${cps.toFixed(1)} 次/秒`), 900);
+    }
+    btn.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      if (ended) return;
+      if (!start) { start = now(); tick(); }
+      count++;
+      $('#cnt').textContent = count;
+    });
+    cleanup = () => cancelAnimationFrame(raf);
+  });
+}
+
+/* ========== 5. 动态追踪 ========== */
+function testTrack() {
+  const DUR = 12;
+  intro('👁️', '动态追踪', `让准星一直停留在移动的小球上，持续 ${DUR} 秒。<br>小球会越来越快。手机上请按住屏幕拖动。`, () => {
+    setStage(`
+      <div class="info"><span>命中率 <b id="pct">0</b>%</span><span>剩余 <b id="trem">${DUR}</b>s</span></div>
+      <canvas id="track-canvas"></canvas>
+      <div class="bar"><i id="tbar"></i></div>
+      <p class="desc" style="margin-top:10px;font-size:13px">把鼠标移到画面中开始</p>`);
+    const cv = $('#track-canvas');
+    const dpr = window.devicePixelRatio || 1;
+    const W = cv.clientWidth, H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    const ctx = cv.getContext('2d');
+    ctx.scale(dpr, dpr);
+
+    const R = 26;
+    const ball = { x: W / 2, y: H / 2, vx: 0, vy: 0, tx: 0, ty: 0 };
+    const mouse = { x: -999, y: -999 };
+    let start = 0, last = 0, onTime = 0, raf, ended = false, retarget = 0;
+
+    function pickDir(speed) {
+      const a = Math.random() * Math.PI * 2;
+      ball.tx = Math.cos(a) * speed; ball.ty = Math.sin(a) * speed;
+    }
+    cv.addEventListener('pointermove', e => {
+      const r = cv.getBoundingClientRect();
+      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+      if (!start) { start = last = now(); pickDir(140); }
+    });
+    cv.addEventListener('pointerdown', e => {
+      cv.setPointerCapture(e.pointerId);
+      const r = cv.getBoundingClientRect();
+      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+      if (!start) { start = last = now(); pickDir(140); }
+    });
+
+    function frame() {
+      const t = now();
+      let on = false;
+      if (start && !ended) {
+        const dt = Math.min(0.05, (t - last) / 1000);
+        last = t;
+        const elapsed = (t - start) / 1000;
+        const speed = 140 + elapsed * 28; // 越来越快
+        retarget -= dt;
+        if (retarget <= 0) { pickDir(speed); retarget = rand(0.4, 1.2); }
+        // 平滑转向
+        ball.vx += (ball.tx - ball.vx) * Math.min(1, dt * 3);
+        ball.vy += (ball.ty - ball.vy) * Math.min(1, dt * 3);
+        ball.x += ball.vx * dt; ball.y += ball.vy * dt;
+        if (ball.x < R || ball.x > W - R) { ball.vx *= -1; ball.tx *= -1; ball.x = clamp(ball.x, R, W - R); }
+        if (ball.y < R || ball.y > H - R) { ball.vy *= -1; ball.ty *= -1; ball.y = clamp(ball.y, R, H - R); }
+
+        on = Math.hypot(mouse.x - ball.x, mouse.y - ball.y) <= R;
+        if (on) onTime += dt;
+        const pct = onTime / Math.max(elapsed, 0.01) * 100;
+        $('#pct').textContent = Math.round(pct);
+        $('#trem').textContent = Math.max(0, DUR - elapsed).toFixed(1);
+        $('#tbar').style.width = clamp(elapsed / DUR * 100) + '%';
+        if (elapsed >= DUR) {
+          ended = true;
+          const p = onTime / DUR * 100;
+          // 命中率 25% 0 分，85% 100 分
+          return finishTest('track', (p - 25) / 0.6, `准星停留在目标上的时间占比 ${p.toFixed(1)}%`);
+        }
+      }
+      // 绘制
+      ctx.clearRect(0, 0, W, H);
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, R, 0, Math.PI * 2);
+      ctx.fillStyle = on ? '#22d3ee' : '#ef4444';
+      ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = on ? 30 : 12;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      if (mouse.x > -999) {
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(mouse.x - 12, mouse.y); ctx.lineTo(mouse.x - 4, mouse.y);
+        ctx.moveTo(mouse.x + 4, mouse.y); ctx.lineTo(mouse.x + 12, mouse.y);
+        ctx.moveTo(mouse.x, mouse.y - 12); ctx.lineTo(mouse.x, mouse.y - 4);
+        ctx.moveTo(mouse.x, mouse.y + 4); ctx.lineTo(mouse.x, mouse.y + 12);
+        ctx.stroke();
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    frame();
+    cleanup = () => cancelAnimationFrame(raf);
+  });
+}
+
+/* ========== 结果 ========== */
+function showResult() {
+  const scores = TESTS.map(t => results[t.key].score);
+  const total = Math.round(scores.reduce((a, b) => a + b) / scores.length);
+  const ranks = [
+    [88, 'S', '电竞天才', '你的各项能力已接近职业选手水平，可以认真考虑一下打比赛了！'],
+    [72, 'A', '高端玩家', '天赋出众，在路人局里基本是带飞的那一个。'],
+    [55, 'B', '实力玩家', '基础扎实，多加练习完全可以冲击更高段位。'],
+    [38, 'C', '休闲玩家', '玩游戏图个开心，节奏不那么快的游戏会更适合你。'],
+    [0,  'D', '快乐玩家', '技术不重要，开心最重要！'],
+  ];
+  const [, rank, title, comment] = ranks.find(r => total >= r[0]);
+
+  const genre = {
+    reaction: '格斗、音游这类拼反应的游戏',
+    aim: '射击类（FPS）游戏，尤其是狙击和点射',
+    memory: '策略、MOBA、解谜类需要记忆和规划的游戏',
+    cps: '即时战略（RTS）、动作类需要高操作量的游戏',
+    track: '射击游戏中的扫射追枪、赛车类游戏',
+  };
+  const order = TESTS.map((t, i) => ({ t, s: scores[i] })).sort((a, b) => b.s - a.s);
+  const best = order[0], worst = order[order.length - 1];
+
+  setStage(`
+    <div class="card">
+      <div class="rank">${rank}</div>
+      <div class="title">${title}</div>
+      <p class="desc" style="margin-bottom:6px">综合得分 <b style="color:#fff;font-size:20px">${total}</b> / 100</p>
+      <p class="desc">${comment}</p>
+      <canvas id="radar"></canvas>
+      <div class="stats">
+        ${TESTS.map((t, i) => `
+          <div class="stat">
+            <div class="k">${t.icon} ${t.name}</div>
+            <div class="v">${scores[i]}</div>
+            <div class="raw">${results[t.key].raw.split('，')[0].split('（')[0]}</div>
+          </div>`).join('')}
+      </div>
+      <div class="advice">
+        💪 最强项：<b>${best.t.name}</b>（${best.s} 分），推荐尝试 ${genre[best.t.key]}。<br>
+        📈 待提升：<b>${worst.t.name}</b>（${worst.s} 分），可以针对性多练练。
+      </div>
+      <button class="btn" id="again">再测一次</button>
+    </div>`);
+  drawRadar($('#radar'), TESTS.map(t => t.name), scores);
+  $('#again').onclick = () => { for (const k in results) delete results[k]; current = -1; next(); };
+}
+
+function drawRadar(cv, labels, values) {
+  const dpr = window.devicePixelRatio || 1;
+  const W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const ctx = cv.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const cx = W / 2, cy = H / 2 + 6, R = Math.min(W, H) / 2 - 40;
+  const n = labels.length;
+  const pt = (i, r) => {
+    const a = -Math.PI / 2 + i * Math.PI * 2 / n;
+    return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+  };
+  // 网格
+  ctx.strokeStyle = 'rgba(255,255,255,.12)';
+  for (let k = 1; k <= 4; k++) {
+    ctx.beginPath();
+    for (let i = 0; i <= n; i++) { const [x, y] = pt(i % n, R * k / 4); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+    ctx.stroke();
+  }
+  for (let i = 0; i < n; i++) { const [x, y] = pt(i, R); ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y); ctx.stroke(); }
+  // 标签
+  ctx.fillStyle = '#cbd5e1'; ctx.font = '13px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  labels.forEach((l, i) => { const [x, y] = pt(i, R + 22); ctx.fillText(l, x, y); });
+
+  // 动画展开
+  let p = 0;
+  (function anim() {
+    p = Math.min(1, p + 0.04);
+    const e = 1 - Math.pow(1 - p, 3);
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx, cy, R + 2, 0, Math.PI * 2); ctx.clip();
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(255,255,255,.12)';
+    for (let k = 1; k <= 4; k++) {
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) { const [x, y] = pt(i % n, R * k / 4); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+      ctx.stroke();
+    }
+    for (let i = 0; i < n; i++) { const [x, y] = pt(i, R); ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y); ctx.stroke(); }
+    const g = ctx.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
+    g.addColorStop(0, 'rgba(167,139,250,.55)'); g.addColorStop(1, 'rgba(34,211,238,.55)');
+    ctx.beginPath();
+    values.forEach((v, i) => { const [x, y] = pt(i, R * Math.max(v, 4) / 100 * e); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+    ctx.closePath();
+    ctx.fillStyle = g; ctx.fill();
+    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2; ctx.stroke();
+    values.forEach((v, i) => {
+      const [x, y] = pt(i, R * Math.max(v, 4) / 100 * e);
+      ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
+    });
+    ctx.restore();
+    if (p < 1) requestAnimationFrame(anim);
+  })();
+}
+
+home();
+</script>
+</body>
+</html>
